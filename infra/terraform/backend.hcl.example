@@ -1,0 +1,8 @@
+# Copy to backend.hcl and fill in your bucket name.
+# backend.hcl is git-ignored because the bucket name contains your account ID.
+bucket       = "ccms-tfstate-111122223333"   # the bucket you created by hand in Step 2.1
+key          = "ccms/terraform.tfstate"       # one state for the whole stack
+region       = "ap-south-1"
+profile      = "ccms"                        # AWS CLI profile for the real account (never the floci emulator)
+encrypt      = true
+use_lockfile = true                          # S3 native locking: stops two teammates applying at once
