@@ -1,0 +1,11 @@
+# Local secrets and per-machine settings
+.env
+
+# Installed packages (each member runs npm install locally)
+node_modules/
+
+# Logs written by scripts/dev-all.sh and the setup scripts
+.logs/
+
+# macOS Finder metadata
+.DS_Store

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CCMS — Campus Complaint Management System</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <h1>CCMS</h1>
+  <div id="whoami"></div>
+</header>
+
+<main>
+  <!-- Login -->
+  <section id="view-login" class="card">
+    <h2>Sign in</h2>
+    <label>Email <input id="login-email" type="email" value="student@ccms.edu"></label>
+    <label>Password <input id="login-password" type="password" value="Password123!"></label>
+    <button id="btn-login">Sign in</button>
+    <p class="hint">Seeded accounts (all use <code>Password123!</code>):<br>
+      student@ccms.edu &middot; staff@ccms.edu &middot; admin@ccms.edu</p>
+    <p id="login-error" class="error"></p>
+    <p class="hint">New student? <a href="#" id="link-signup">Create an account</a></p>
+  </section>
+
+  <!-- Student: sign up -->
+  <section id="view-signup" class="card hidden">
+    <h2>Create an account</h2>
+    <label>Full name <input id="signup-name" type="text"></label>
+    <label>Email <input id="signup-email" type="email"></label>
+    <label>Password <input id="signup-password" type="password" placeholder="At least 8 characters"></label>
+    <button id="btn-signup">Create account</button>
+    <p class="hint">Accounts created here are student accounts.
+      <a href="#" id="link-signin">Back to sign in</a></p>
+    <p id="signup-error" class="error"></p>
+  </section>
+
+  <!-- Student: submit -->
+  <section id="view-submit" class="card hidden">
+    <h2>Submit a complaint</h2>
+    <label>Category <select id="f-category"></select></label>
+    <label>Location <select id="f-location"></select></label>
+    <label>Title <input id="f-title" placeholder="Wi-Fi down in Room 204"></label>
+    <label>Description <textarea id="f-description" rows="3"></textarea></label>
+    <label>Photo (optional) <input id="f-photo" type="file" accept="image/*"></label>
+    <button id="btn-submit">Submit complaint</button>
+    <p id="submit-msg"></p>
+  </section>
+
+  <!-- Complaint list -->
+  <section id="view-list" class="card hidden">
+    <h2 id="list-title">Complaints</h2>
+    <button id="btn-refresh" class="secondary">Refresh</button>
+    <div id="list"></div>
+  </section>
+
+  <!-- Admin stats -->
+  <section id="view-stats" class="card hidden">
+    <h2>Statistics</h2>
+    <div id="stats"></div>
+  </section>
+
+  <!-- Notifications -->
+  <section id="view-notifications" class="card hidden">
+    <h2>Notifications</h2>
+    <div id="notifications"></div>
+  </section>
+</main>
+
+<script src="/app.js"></script>
+</body>
+</html>

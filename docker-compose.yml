@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ccms
+      POSTGRES_USER: ccms
+      POSTGRES_PASSWORD: ccms_dev_password
+    ports: ["5432:5432"]
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ccms"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Stands in for Amazon SES locally. Visit http://localhost:8025 to read
+  # "sent" emails - nothing leaves your machine.
+  mailhog:
+    image: mailhog/mailhog
+    ports: ["1025:1025", "8025:8025"]
+
+  auth-service:
+    build: ./services/auth-service
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://ccms:ccms_dev_password@postgres:5432/ccms
+      PORT: 3000
+    ports: ["3000:3000"]
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  complaint-service:
+    build: ./services/complaint-service
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://ccms:ccms_dev_password@postgres:5432/ccms
+      AUTH_SERVICE_URL: http://auth-service:3000
+      NOTIFICATION_URL: http://notification-service:3002
+      PORT: 3001
+    ports: ["3001:3001"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      auth-service: { condition: service_started }
+
+  notification-service:
+    build: ./services/notification-service
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://ccms:ccms_dev_password@postgres:5432/ccms
+      AUTH_SERVICE_URL: http://auth-service:3000
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      PORT: 3002
+    ports: ["3002:3002"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      mailhog: { condition: service_started }
+
+volumes:
+  pgdata:
