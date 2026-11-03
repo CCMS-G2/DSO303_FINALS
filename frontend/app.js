@@ -92,6 +92,7 @@ $('btn-login').onclick = async () => {
     await signIn($('login-email').value, $('login-password').value);
   } catch (err) {
     $('login-error').textContent = err.message;
+  } finally {
     setBtnLoading(btn, false);
   }
 };
@@ -121,6 +122,7 @@ $('btn-signup').onclick = async () => {
     await signIn(email, pass);
   } catch (err) {
     $('signup-error').textContent = err.message;
+  } finally {
     setBtnLoading(btn, false);
   }
 };
