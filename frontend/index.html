@@ -7,67 +7,166 @@
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<header>
-  <h1>CCMS</h1>
+
+<!-- ── Sticky header ── -->
+<header id="app-header">
+  <div class="header-left">
+    <div class="logo-mark">CC</div>
+    <div>
+      <div class="brand-name">CCMS</div>
+      <div class="brand-tagline">Campus Complaint Management</div>
+    </div>
+  </div>
   <div id="whoami"></div>
 </header>
 
-<main>
-  <!-- Login -->
-  <section id="view-login" class="card">
-    <h2>Sign in</h2>
-    <label>Email <input id="login-email" type="email" value="student@ccms.edu"></label>
-    <label>Password <input id="login-password" type="password" value="Password123!"></label>
-    <button id="btn-login">Sign in</button>
-    <p class="hint">Seeded accounts (all use <code>Password123!</code>):<br>
-      student@ccms.edu &middot; staff@ccms.edu &middot; admin@ccms.edu</p>
-    <p id="login-error" class="error"></p>
-    <p class="hint">New student? <a href="#" id="link-signup">Create an account</a></p>
+<!-- ── Navigation tabs (shown after login) ── -->
+<nav id="app-nav" class="hidden">
+  <button class="nav-btn" data-target="view-list" id="nav-list">
+    📋 Complaints
+  </button>
+  <button class="nav-btn" data-target="view-submit" id="nav-submit">
+    ➕ New Complaint
+  </button>
+  <button class="nav-btn" data-target="view-notifications" id="nav-notifications">
+    🔔 Notifications
+    <span id="notif-badge" class="nav-badge hidden"></span>
+  </button>
+  <button class="nav-btn" data-target="view-stats" id="nav-stats">
+    📊 Statistics
+  </button>
+</nav>
+
+<main id="app-main">
+
+  <!-- ── Login ── -->
+  <div id="view-login" class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">CC</div>
+        <h1>Welcome back</h1>
+        <p>Sign in to your CCMS account</p>
+      </div>
+      <label>Email address
+        <input id="login-email" type="email" value="student@ccms.edu">
+      </label>
+      <label>Password
+        <input id="login-password" type="password" value="Password123!">
+      </label>
+      <button id="btn-login" class="btn-primary btn-full">Sign in</button>
+      <div class="auth-hint">
+        Seeded accounts — all use <code>Password123!</code><br>
+        <code>student@ccms.edu</code> &middot; <code>staff@ccms.edu</code> &middot; <code>admin@ccms.edu</code>
+      </div>
+      <p id="login-error" class="error"></p>
+      <p class="auth-footer">New student? <a href="#" id="link-signup">Create an account</a></p>
+    </div>
+  </div>
+
+  <!-- ── Sign up ── -->
+  <div id="view-signup" class="auth-wrap hidden">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">CC</div>
+        <h1>Create account</h1>
+        <p>Student accounts only. Staff are created by an admin.</p>
+      </div>
+      <label>Full name
+        <input id="signup-name" type="text" placeholder="Your full name">
+      </label>
+      <label>Email address
+        <input id="signup-email" type="email" placeholder="your@email.com">
+      </label>
+      <label>Password
+        <input id="signup-password" type="password" placeholder="At least 8 characters">
+      </label>
+      <button id="btn-signup" class="btn-primary btn-full">Create account</button>
+      <p id="signup-error" class="error"></p>
+      <p class="auth-footer"><a href="#" id="link-signin">← Back to sign in</a></p>
+    </div>
+  </div>
+
+  <!-- ── Submit complaint (students only) ── -->
+  <section id="view-submit" class="hidden">
+    <div class="page-header">
+      <div>
+        <h2>Submit a Complaint</h2>
+        <p class="page-sub">Report an issue on campus and we'll get it resolved.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="form-grid">
+        <label>Category <select id="f-category"></select></label>
+        <label>Location <select id="f-location"></select></label>
+      </div>
+      <label>Title
+        <input id="f-title" placeholder="e.g. Wi-Fi down in Room 204">
+      </label>
+      <label>Description
+        <textarea id="f-description" rows="4" placeholder="Describe the issue in as much detail as possible..."></textarea>
+      </label>
+      <label>Photo (optional)
+        <div class="upload-area">
+          <input id="f-photo" type="file" accept="image/*">
+          <div class="upload-label">
+            <span class="upload-icon">📎</span>
+            Click to attach a photo
+            <div class="upload-hint">JPG, PNG, WEBP</div>
+          </div>
+        </div>
+      </label>
+      <div class="form-actions">
+        <button id="btn-submit" class="btn-primary">Submit complaint</button>
+        <div id="submit-msg"></div>
+      </div>
+    </div>
   </section>
 
-  <!-- Student: sign up -->
-  <section id="view-signup" class="card hidden">
-    <h2>Create an account</h2>
-    <label>Full name <input id="signup-name" type="text"></label>
-    <label>Email <input id="signup-email" type="email"></label>
-    <label>Password <input id="signup-password" type="password" placeholder="At least 8 characters"></label>
-    <button id="btn-signup">Create account</button>
-    <p class="hint">Accounts created here are student accounts.
-      <a href="#" id="link-signin">Back to sign in</a></p>
-    <p id="signup-error" class="error"></p>
-  </section>
-
-  <!-- Student: submit -->
-  <section id="view-submit" class="card hidden">
-    <h2>Submit a complaint</h2>
-    <label>Category <select id="f-category"></select></label>
-    <label>Location <select id="f-location"></select></label>
-    <label>Title <input id="f-title" placeholder="Wi-Fi down in Room 204"></label>
-    <label>Description <textarea id="f-description" rows="3"></textarea></label>
-    <label>Photo (optional) <input id="f-photo" type="file" accept="image/*"></label>
-    <button id="btn-submit">Submit complaint</button>
-    <p id="submit-msg"></p>
-  </section>
-
-  <!-- Complaint list -->
-  <section id="view-list" class="card hidden">
-    <h2 id="list-title">Complaints</h2>
-    <button id="btn-refresh" class="secondary">Refresh</button>
+  <!-- ── Complaint list ── -->
+  <section id="view-list" class="hidden">
+    <div class="page-header">
+      <h2 id="list-title">Complaints</h2>
+      <button id="btn-refresh" class="btn-ghost btn-sm">↻ Refresh</button>
+    </div>
     <div id="list"></div>
   </section>
 
-  <!-- Admin stats -->
-  <section id="view-stats" class="card hidden">
-    <h2>Statistics</h2>
+  <!-- ── Admin statistics ── -->
+  <section id="view-stats" class="hidden">
+    <div class="page-header">
+      <div>
+        <h2>Statistics</h2>
+        <p class="page-sub">Overview of complaint activity across campus</p>
+      </div>
+    </div>
     <div id="stats"></div>
   </section>
 
-  <!-- Notifications -->
-  <section id="view-notifications" class="card hidden">
-    <h2>Notifications</h2>
-    <div id="notifications"></div>
+  <!-- ── Notifications ── -->
+  <section id="view-notifications" class="hidden">
+    <div class="page-header">
+      <h2>Notifications</h2>
+    </div>
+    <div class="card" id="notifications"></div>
   </section>
+
 </main>
+
+<!-- ── Resolution note modal ── -->
+<div id="modal-overlay" class="modal-overlay hidden">
+  <div class="modal">
+    <h3>Add Resolution Note</h3>
+    <p>Describe how the issue was resolved. This note is visible to the student.</p>
+    <textarea id="modal-note" rows="4" placeholder="e.g. Replaced the faulty router in Room 204. Wi-Fi is now operational."></textarea>
+    <div class="modal-actions">
+      <button id="modal-cancel" class="btn-ghost">Cancel</button>
+      <button id="modal-confirm" class="btn-primary">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast container ── -->
+<div id="toast-container"></div>
 
 <script src="/app.js"></script>
 </body>
