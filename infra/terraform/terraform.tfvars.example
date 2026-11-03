@@ -1,0 +1,10 @@
+# Copy to terraform.tfvars. Only set what differs from the defaults in variables.tf.
+
+aws_region  = "ap-south-1"
+aws_profile = "ccms"   # your AWS CLI profile name for account 363242104805
+project     = "ccms"
+
+# Subnet CIDRs default to the proposal layout (10.0.1/2, 10.0.11/12, 10.0.21/22). Leave them alone.
+
+# ALB production listener port (proposal: 80). Deploys are ECS rolling updates, no test listener.
+# alb_prod_port = 80
