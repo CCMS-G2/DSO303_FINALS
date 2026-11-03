@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Namgay Wangchuk - Auth Service (login, roles, user management)
 # Run from anywhere:  ./scripts/setup-namgay.sh
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
