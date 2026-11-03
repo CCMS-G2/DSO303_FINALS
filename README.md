@@ -4,14 +4,14 @@ Local development setup. DSO303 Cloud Native Solution Design, College of Science
 
 ## Who owns what
 
-| Member | Owns | Runs | Port |
+| Member | Owns | Folder | Port |
 |---|---|---|---|
-| Namgay Wangchuk | Auth Service — login, roles, user accounts | `./scripts/setup-namgay.sh` | 3000 |
-| Dechen Wangdra Sherpa | Complaint Service — lifecycle, assignment, uploads, statistics | `./scripts/setup-dechen.sh` | 3001 |
-| Dupchu Wangmo | Notification Service, database schema, Docker setup | `./scripts/setup-dupchu.sh` | 3002 |
-| Tashi Penjor | Frontend — the pages everyone uses | `./scripts/setup-tashi.sh` | 5173 |
+| Namgay Wangchuk | Auth Service — login, roles, user accounts | `services/auth-service` | 3000 |
+| Dechen Wangdra Sherpa | Complaint Service — lifecycle, assignment, uploads, statistics | `services/complaint-service` | 3001 |
+| Dupchu Wangmo | Notification Service, database schema, Docker setup | `services/notification-service` | 3002 |
+| Tashi Penjor | Frontend — the pages everyone uses | `frontend` | 5173 |
 
-Everyone can read and edit every file. The scripts just make it easy to run *your* part.
+Everyone can read and edit every file.
 
 ## Before you start (once per machine)
 
@@ -31,28 +31,82 @@ sudo usermod -aG docker $USER   # then log out and back in
 ```bash
 git clone <your-repo-url> ccms
 cd ccms
-./scripts/setup-namgay.sh      # or whichever script is yours
 ```
 
-The script installs what it needs, starts the shared database, and runs your service.
-It is safe to run again any time. Press `Ctrl+C` to stop.
+There are two ways to run the app.
 
-The first person to run a script starts Postgres and MailHog; everyone else reuses them.
-
-### Running the whole app
+### Option A: everything in Docker (easiest to demo)
 
 ```bash
-./scripts/dev-all.sh           # all services + frontend in one terminal
+cp .env.example .env
+docker compose up --build
+```
+
+This starts Postgres, MailHog, and all three services. The frontend is not in Docker.
+Start it in a second terminal:
+
+```bash
+cd frontend && PORT=5173 node serve.js
 ```
 
 Then open **http://localhost:5173**.
 
-### Stopping
+### Option B: your own service directly (what you'll use while coding)
+
+Start the shared pieces once. Running it again is harmless.
 
 ```bash
-./scripts/stop.sh              # stop the database, keep the data
-./scripts/stop.sh --wipe       # stop and delete all local data
+docker compose up -d postgres mailhog
 ```
+
+Install each service's dependencies once, then run it. Each command below is
+self-contained: it sets its own environment variables and restarts on save.
+
+```bash
+cd services/auth-service && npm install && cd ../..
+cd services/complaint-service && npm install && cd ../..
+cd services/notification-service && npm install && cd ../..
+```
+
+**Namgay (Auth Service, port 3000):**
+
+```bash
+cd services/auth-service
+DATABASE_URL=postgresql://ccms:ccms_dev_password@localhost:5432/ccms PORT=3000 JWT_SECRET=dev-only-change-me node --watch src/app.js
+```
+
+**Dechen (Complaint Service, port 3001):**
+
+```bash
+cd services/complaint-service
+DATABASE_URL=postgresql://ccms:ccms_dev_password@localhost:5432/ccms PORT=3001 JWT_SECRET=dev-only-change-me AUTH_SERVICE_URL=http://localhost:3000 NOTIFICATION_URL=http://localhost:3002 node --watch src/app.js
+```
+
+**Dupchu (Notification Service, port 3002):**
+
+```bash
+cd services/notification-service
+DATABASE_URL=postgresql://ccms:ccms_dev_password@localhost:5432/ccms PORT=3002 JWT_SECRET=dev-only-change-me AUTH_SERVICE_URL=http://localhost:3000 SMTP_HOST=localhost SMTP_PORT=1025 node --watch src/app.js
+```
+
+**Tashi (Frontend, port 5173):**
+
+```bash
+cd frontend && PORT=5173 node serve.js
+```
+
+Run each command in its own terminal. Press `Ctrl+C` to stop a service.
+
+Check that the backend is up. Each should return a 200 response:
+
+```bash
+curl localhost:3000/health
+curl localhost:3001/health
+curl localhost:3002/health
+```
+
+Everyone must use the same `JWT_SECRET`. A token signed by one service is rejected by the
+others if the secrets differ. The value above is the shared development value.
 
 ## Test accounts
 
@@ -63,6 +117,15 @@ All use the password `Password123!`
 | `student@ccms.edu` | Student | Submit complaints, track them, close resolved ones |
 | `staff@ccms.edu` | Staff | See assigned complaints, start work, resolve them |
 | `admin@ccms.edu` | Admin | See everything, assign staff, view statistics, manage users |
+
+Try the Auth Service once it is running:
+
+```bash
+curl localhost:3000/health
+curl -X POST localhost:3000/api/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"admin@ccms.edu","password":"Password123!"}'
+```
 
 ## How the pieces fit together
 
@@ -96,6 +159,15 @@ SUBMITTED --> ASSIGNED --> IN_PROGRESS --> RESOLVED --> CLOSED
 
 Anything else is rejected. The server enforces this, not the browser.
 
+## Stopping
+
+```bash
+docker compose down        # stop the database and MailHog, keep the data
+docker compose down -v     # stop and delete all local data
+```
+
+Stop Option A with `Ctrl+C`, then run `docker compose down`.
+
 ## Working together
 
 ```bash
@@ -107,8 +179,8 @@ git push
 
 Only edit files you own unless you tell the owner first — that avoids merge conflicts.
 
-Note that `.env`, `node_modules/` and uploaded files are deliberately not in Git.
-Your `.env` is created automatically from `.env.example`.
+`.env`, `node_modules/` and uploaded files are deliberately not in Git.
+`.env` is only needed for Option A; it is created by `cp .env.example .env`.
 
 ## When something breaks
 
@@ -117,8 +189,9 @@ Your `.env` is created automatically from `.env.example`.
 | `Docker is installed but not running` | Start Docker Desktop, or `sudo systemctl start docker` |
 | `Port 3000 is already in use` | `lsof -iTCP:3000 -sTCP:LISTEN`, then stop that process |
 | `Postgres did not become ready` | `docker compose logs postgres` |
-| Database looks wrong after a schema change | `docker compose down -v && docker compose up -d postgres` |
-| Sign-in fails in the browser | The Auth Service isn't running — `./scripts/setup-namgay.sh` |
+| Service exits with a `JWT_SECRET` error | Add `JWT_SECRET=dev-only-change-me` to the command |
+| Database looks wrong after a schema change | `docker compose down -v && docker compose up -d postgres mailhog` |
+| Sign-in fails in the browser | The Auth Service isn't running — start it with the Namgay command above |
 | Assigning a complaint returns 502 | Same: the Complaint Service needs the Auth Service |
 
 Inspect the database directly:
@@ -133,13 +206,12 @@ docker compose exec postgres psql -U ccms -d ccms
 ccms/
   db/init.sql                      schema + seed data, loads automatically
   docker-compose.yml               Postgres, MailHog, and all services
-  .env.example                     copied to .env on first run
+  .env.example                     copied to .env for Option A
   frontend/                        index.html, style.css, app.js, serve.js
   services/
     auth-service/src/app.js
     complaint-service/src/app.js   + eventBus.js
     notification-service/src/app.js
-  scripts/                         the setup scripts
 ```
 
 ## Later: moving to AWS

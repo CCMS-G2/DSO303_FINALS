@@ -4,7 +4,7 @@
 # Installed packages (each member runs npm install locally)
 node_modules/
 
-# Logs written by scripts/dev-all.sh and the setup scripts
+# Logs from earlier script-based runs
 .logs/
 
 # macOS Finder metadata
