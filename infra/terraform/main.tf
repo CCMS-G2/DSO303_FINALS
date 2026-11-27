@@ -166,3 +166,27 @@ module "monitoring" {
   consumer_function_name    = module.notification.function_names["consumer"]
   db_instance_id            = module.database.instance_id
 }
+
+# ---------------------------------------------------------------------------
+# CI/CD: a push to main that changes services/<name>/** rebuilds and deploys
+# only that service. Approve the GitHub connection once in the console first.
+# ---------------------------------------------------------------------------
+module "cicd" {
+  source = "./modules/cicd"
+  count  = var.enable_cicd ? 1 : 0
+
+  project            = var.project
+  github_repository  = var.github_repository
+  branch             = var.cicd_branch
+  ecs_cluster_name   = module.ecs.cluster_name
+  ecs_task_role_arns = module.ecs.iam_role_arns
+
+  services = {
+    for svc in ["auth", "complaint"] : "${svc}-service" => {
+      repository_url   = module.ecr.repository_urls["${svc}-service"]
+      container_name   = "${svc}-service"
+      ecs_service_name = module.ecs.service_names[svc]
+    }
+  }
+  ecr_repository_arns = module.ecr.repository_arns
+}

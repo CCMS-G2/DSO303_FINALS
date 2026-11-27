@@ -33,3 +33,8 @@ output "migrate_task_family" {
 output "log_group_names" {
   value = { for k, g in aws_cloudwatch_log_group.service : k => g.name }
 }
+
+output "iam_role_arns" {
+  description = "Execution role plus each service's task role (the CI/CD deploy action passes these)."
+  value       = concat([aws_iam_role.execution.arn], [for r in aws_iam_role.task : r.arn])
+}

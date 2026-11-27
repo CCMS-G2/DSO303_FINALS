@@ -57,3 +57,13 @@ output "availability_zones" {
 output "nat_gateway_public_ip" {
   value = module.network.nat_gateway_public_ip
 }
+
+# ---- CI/CD ----
+output "github_connection_status" {
+  description = "PENDING until approved in the console: Developer Tools > Settings > Connections."
+  value       = var.enable_cicd ? module.cicd[0].connection_status : "disabled"
+}
+
+output "pipeline_names" {
+  value = var.enable_cicd ? module.cicd[0].pipeline_names : {}
+}

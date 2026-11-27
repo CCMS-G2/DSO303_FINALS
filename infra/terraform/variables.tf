@@ -99,3 +99,23 @@ variable "simulate_notification_failure" {
   type        = bool
   default     = false
 }
+
+# ---------------------------------------------------------------------------
+# CI/CD
+# ---------------------------------------------------------------------------
+variable "enable_cicd" {
+  description = "Create the CodePipeline/CodeBuild pipelines and the GitHub connection."
+  type        = bool
+  default     = true
+}
+
+variable "github_repository" {
+  description = "GitHub repository the pipelines build from (owner/name)."
+  type        = string
+  default     = "CCMS-G2/DSO303_FINALS"
+}
+
+variable "cicd_branch" {
+  type    = string
+  default = "main"
+}

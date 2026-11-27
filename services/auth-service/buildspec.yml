@@ -1,0 +1,30 @@
+# CodeBuild steps for this service (proposal, Section 18).
+# Environment variables come from the CodeBuild project (infra/terraform/modules/cicd):
+#   SERVICE_DIR, CONTAINER_NAME, REPOSITORY_URI, ECR_REGISTRY
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - cd "$SERVICE_DIR"
+      - npm ci
+      - npm audit --omit=dev --audit-level=high
+      - npm test --if-present
+      - aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS --password-stdin "$ECR_REGISTRY"
+      - IMAGE_TAG=$(echo "$CODEBUILD_RESOLVED_SOURCE_VERSION" | cut -c1-7)
+  build:
+    commands:
+      - docker build -t "$REPOSITORY_URI:$IMAGE_TAG" -t "$REPOSITORY_URI:latest" .
+  post_build:
+    commands:
+      # Only push if the build succeeded (post_build runs even after a failed build).
+      - test "$CODEBUILD_BUILD_SUCCEEDING" = "1"
+      - docker push "$REPOSITORY_URI:$IMAGE_TAG"
+      - docker push "$REPOSITORY_URI:latest"
+      - printf '[{"name":"%s","imageUri":"%s"}]' "$CONTAINER_NAME" "$REPOSITORY_URI:$IMAGE_TAG" > "$CODEBUILD_SRC_DIR/imagedefinitions.json"
+      - cat "$CODEBUILD_SRC_DIR/imagedefinitions.json"
+
+artifacts:
+  files:
+    - imagedefinitions.json
+  discard-paths: yes

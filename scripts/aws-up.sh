@@ -7,7 +7,9 @@
 #   4. load db/init.sql into RDS with a one-off ECS task (first run only)
 #   5. roll the ECS services onto the new images and wait until healthy
 #
-# Usage: scripts/aws-up.sh            Re-running it is safe; it redeploys.
+# Usage: scripts/aws-up.sh                 asks before terraform apply
+#        AUTO_APPROVE=1 scripts/aws-up.sh  no prompt (unattended runs)
+# Re-running it is safe; it redeploys.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -39,7 +41,7 @@ for svc in auth-service complaint-service; do
 done
 
 step "3/5 Terraform apply"
-$TF apply -input=false
+$TF apply -input=false ${AUTO_APPROVE:+-auto-approve}
 
 CLUSTER=$($TF output -raw ecs_cluster_name)
 step "4/5 Database schema"

@@ -138,7 +138,7 @@ resource "aws_lambda_event_source_mapping" "events" {
   event_source_arn                   = var.queue_arn
   function_name                      = aws_lambda_function.fn["consumer"].arn
   batch_size                         = 10
-  maximum_batching_window_in_seconds = 5
+  maximum_batching_window_in_seconds = 0                           # invoke as soon as an event arrives
   function_response_types            = ["ReportBatchItemFailures"] # retry only the failed messages
 
   scaling_config {
