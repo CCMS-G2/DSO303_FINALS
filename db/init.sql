@@ -102,14 +102,18 @@ CREATE TABLE complaint.complaint_status_history (
 
 CREATE TABLE notification.notifications (
   id           uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  event_id     uuid NOT NULL UNIQUE, -- idempotency key, as in the proposal's reliability design
+  event_id     uuid NOT NULL,
   user_id      uuid NOT NULL,
   complaint_id uuid,
   type         text NOT NULL,
   message      text NOT NULL,
   is_read      boolean NOT NULL DEFAULT false,
   email_sent   boolean NOT NULL DEFAULT false,
-  created_at   timestamptz NOT NULL DEFAULT now()
+  created_at   timestamptz NOT NULL DEFAULT now(),
+  -- Idempotency key (proposal, reliability design). One event can notify
+  -- several people (e.g. staff and student on assignment), so the key is
+  -- the pair, not event_id alone.
+  UNIQUE (event_id, user_id)
 );
 
 CREATE INDEX idx_notifications_user ON notification.notifications (user_id, is_read);

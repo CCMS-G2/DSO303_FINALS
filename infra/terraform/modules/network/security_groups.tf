@@ -159,3 +159,24 @@ resource "aws_vpc_security_group_ingress_rule" "rds_from_lambda" {
   description                  = "From notification Lambda"
 }
 # sg-rds has no egress rule: the database never starts outbound connections.
+
+# ----- Lambda -> ALB (recipient email lookup) --------------------------------
+# The notification Lambda looks up a recipient's email through the Auth
+# Service's internal API (GET /internal/users/{id}), reached via the ALB.
+resource "aws_vpc_security_group_egress_rule" "lambda_to_alb" {
+  security_group_id            = aws_security_group.lambda.id
+  referenced_security_group_id = aws_security_group.alb.id
+  ip_protocol                  = "tcp"
+  from_port                    = var.alb_prod_port
+  to_port                      = var.alb_prod_port
+  description                  = "Auth Service internal API through the ALB"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "alb_from_lambda" {
+  security_group_id            = aws_security_group.alb.id
+  referenced_security_group_id = aws_security_group.lambda.id
+  ip_protocol                  = "tcp"
+  from_port                    = var.alb_prod_port
+  to_port                      = var.alb_prod_port
+  description                  = "Recipient lookups from the notification Lambda"
+}

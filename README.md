@@ -142,7 +142,7 @@ Browser (5173)
 
 - **Emails** go to MailHog at http://localhost:8025, never to the internet.
 - **Photos** upload in two steps: ask the Complaint Service for an upload URL, then send the file to it. On AWS that URL becomes an S3 pre-signed link, and the frontend code does not change.
-- **Events** are sent as HTTP calls to the Notification Service. On AWS they become SQS messages, and only `eventBus.js` changes.
+- **Events** are sent as HTTP calls to the Notification Service. On AWS they become SQS messages (`eventBus.js` picks the transport from the environment).
 
 ## Complaint lifecycle
 
@@ -207,18 +207,20 @@ ccms/
   db/init.sql                      schema + seed data, loads automatically
   docker-compose.yml               Postgres, MailHog, and all services
   .env.example                     copied to .env for Option A
-  frontend/                        index.html, style.css, app.js, serve.js
+  frontend/                        index.html, style.css, app.js, config.js, serve.js
   services/
     auth-service/src/app.js
-    complaint-service/src/app.js   + eventBus.js
-    notification-service/src/app.js
+    complaint-service/src/app.js   + eventBus.js (HTTP locally, SQS on AWS)
+    notification-service/src/      notifier.js (shared logic), app.js (local), lambda.js (AWS)
+  infra/terraform/                 all AWS infrastructure, one module per concern
+  scripts/aws-up.sh, aws-down.sh   deploy to / remove from your AWS account
 ```
 
-## Later: moving to AWS
+## Running on AWS
 
-The code is already shaped for it. These are the only parts that change:
+The same code runs in both places; environment variables decide which backing service is used:
 
-| Local now | On AWS |
+| Local | On AWS |
 |---|---|
 | Postgres in Docker | RDS PostgreSQL |
 | MailHog | Amazon SES |
@@ -227,6 +229,65 @@ The code is already shaped for it. These are the only parts that change:
 | Upload URL from disk storage | S3 pre-signed URL |
 | Services run with `node` | Docker containers on ECS Fargate |
 | Frontend on `serve.js` | S3 + CloudFront |
+
+### Deploying to your own AWS account
+
+Each member deploys the whole stack to **their own AWS account**. The Terraform code is
+shared; the account details are not. Two git-ignored files hold your personal values:
+
+| Template (committed) | Your copy (git-ignored) | What you put in it |
+|---|---|---|
+| `infra/terraform/backend.hcl.example` | `infra/terraform/backend.hcl` | Your own state bucket name |
+| `infra/terraform/terraform.tfvars.example` | `infra/terraform/terraform.tfvars` | Your AWS CLI profile name |
+
+Your AWS access keys never go in the repo. `aws configure` stores them in `~/.aws/credentials`.
+
+One-time setup:
+
+```bash
+# 1. Save your access keys under the profile name "ccms"
+aws configure --profile ccms
+aws sts get-caller-identity --profile ccms      # note the "Account" number
+
+# 2. Create a bucket for your Terraform state (bucket names are global, so include your account ID)
+aws s3api create-bucket --bucket ccms-tfstate-<ACCOUNT_ID> --region ap-south-1 \
+  --create-bucket-configuration LocationConstraint=ap-south-1 --profile ccms
+aws s3api put-bucket-versioning --bucket ccms-tfstate-<ACCOUNT_ID> \
+  --versioning-configuration Status=Enabled --profile ccms
+
+# 3. Make your personal copies and fill in the bucket name
+cd infra/terraform
+cp backend.hcl.example backend.hcl
+cp terraform.tfvars.example terraform.tfvars
+
+# 4. Initialise (Terraform 1.11 or newer)
+terraform init -backend-config=backend.hcl
+```
+
+Optional settings in your `terraform.tfvars`:
+
+```hcl
+ses_sender_email = "you@example.com"   # enables email; click the verification link AWS sends
+alert_email      = "you@example.com"   # alarm + budget emails; confirm the SNS subscription email
+```
+
+Deploy and remove (Docker Desktop must be running for deploy):
+
+```bash
+scripts/aws-up.sh     # build + push images, terraform apply, load schema, roll out (~20 min first time)
+scripts/aws-down.sh   # destroy everything except the state bucket
+```
+
+`aws-up.sh` prints the CloudFront URL at the end. Log in with the test accounts above.
+
+Rules:
+
+- **Never commit `backend.hcl`, `terraform.tfvars` or `.env`.** They are git-ignored; keep it that way.
+- **Run `scripts/aws-down.sh` when you finish a session.** The full stack costs roughly USD 4-6 a day.
+  Set up an AWS Budgets alert in your own account before your first `apply`.
+- If you switch to another member's account on the same machine, delete `.terraform/` and run
+  `terraform init -backend-config=backend.hcl -reconfigure`.
+- The **final demo runs from one agreed account**; the others are for learning and testing.
 
 Note that an **AWS Academy Learner Lab** account has real limits: credentials expire
 every few hours, you usually cannot create IAM roles (there is one pre-made `LabRole`),

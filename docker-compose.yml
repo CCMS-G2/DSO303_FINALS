@@ -5,7 +5,9 @@ services:
       POSTGRES_DB: ccms
       POSTGRES_USER: ccms
       POSTGRES_PASSWORD: ccms_dev_password
-    ports: ["5432:5432"]
+    # Host port is configurable: set POSTGRES_PORT in your .env if 5432 is
+    # already taken on your machine (e.g. by a system PostgreSQL install).
+    ports: ["${POSTGRES_PORT:-5432}:5432"]
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
       - pgdata:/var/lib/postgresql/data
