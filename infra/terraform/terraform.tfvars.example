@@ -1,7 +1,7 @@
 # Copy to terraform.tfvars. Only set what differs from the defaults in variables.tf.
 
 aws_region  = "ap-south-1"
-aws_profile = "ccms"   # your AWS CLI profile name for account 363242104805
+aws_profile = "ccms"   # your AWS CLI profile name for your own AWS account
 project     = "ccms"
 
 # Subnet CIDRs default to the proposal layout (10.0.1/2, 10.0.11/12, 10.0.21/22). Leave them alone.

@@ -54,3 +54,68 @@ variable "service_ports" {
     complaint = 3001
   }
 }
+
+# ---------------------------------------------------------------------------
+# Application deployment
+# ---------------------------------------------------------------------------
+variable "image_tag" {
+  description = "Image tag deployed to ECS. scripts/aws-deploy.sh pushes both :latest and the Git commit SHA."
+  type        = string
+  default     = "latest"
+}
+
+variable "ecs_min_tasks" {
+  description = "Minimum (and starting) tasks per service. Proposal: 2, one per AZ."
+  type        = number
+  default     = 2
+}
+
+variable "ecs_max_tasks" {
+  description = "Maximum tasks per service under load. Proposal: 4."
+  type        = number
+  default     = 4
+}
+
+variable "db_backup_retention_days" {
+  description = "RDS automated backup retention. Free plan accounts may reject values above 1."
+  type        = number
+  default     = 1
+}
+
+variable "ses_sender_email" {
+  description = "Email address to send notifications from. AWS emails it a verification link. Empty = no email, in-app only."
+  type        = string
+  default     = ""
+}
+
+variable "alert_email" {
+  description = "Email for CloudWatch alarms and the budget alert. Empty = no emails."
+  type        = string
+  default     = ""
+}
+
+variable "simulate_notification_failure" {
+  description = "Demo scenario 6: true makes the notification consumer fail so events land in the DLQ."
+  type        = bool
+  default     = false
+}
+
+# ---------------------------------------------------------------------------
+# CI/CD
+# ---------------------------------------------------------------------------
+variable "enable_cicd" {
+  description = "Create the CodePipeline/CodeBuild pipelines and the GitHub connection."
+  type        = bool
+  default     = true
+}
+
+variable "github_repository" {
+  description = "GitHub repository the pipelines build from (owner/name)."
+  type        = string
+  default     = "CCMS-G2/DSO303_FINALS"
+}
+
+variable "cicd_branch" {
+  type    = string
+  default = "main"
+}

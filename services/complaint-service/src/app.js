@@ -35,31 +35,65 @@ app.get('/health', (_req, res) => res.json({ status: 'ok', service: 'complaint-s
 // like "uploads/<userId>/<uuid>.jpg" (matching the proposal's S3 key format).
 // GET requests are served from the same root, so a client always fetches a
 // file at /api/complaints/uploads/file/<key> - no path translation needed.
-const EVIDENCE_ROOT = path.join(__dirname, '..', 'data', 'evidence');
-fs.mkdirSync(EVIDENCE_ROOT, { recursive: true });
+//
+// On AWS (EVIDENCE_BUCKET is set) the service issues real S3 pre-signed URLs
+// instead, valid for 5 minutes, and the local file routes are not mounted.
+const EVIDENCE_BUCKET = process.env.EVIDENCE_BUCKET;
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png'];
+const PRESIGN_SECONDS = 300;
 
-app.post('/api/complaints/uploads', authenticate, requireRole('STUDENT'), (req, res) => {
+let s3; let PutObjectCommand; let GetObjectCommand; let getSignedUrl;
+if (EVIDENCE_BUCKET) {
+  const s3sdk = require('@aws-sdk/client-s3');
+  ({ PutObjectCommand, GetObjectCommand } = s3sdk);
+  ({ getSignedUrl } = require('@aws-sdk/s3-request-presigner'));
+  // Credentials come from the ECS task role. WHEN_REQUIRED stops the SDK from
+  // signing a checksum of an empty body into the URL, which breaks browser PUTs.
+  s3 = new s3sdk.S3Client({ requestChecksumCalculation: 'WHEN_REQUIRED' });
+}
+
+app.post('/api/complaints/uploads', authenticate, requireRole('STUDENT'), asyncHandler(async (req, res) => {
   const { contentType } = req.body || {};
-  if (!contentType || !contentType.startsWith('image/')) {
-    return res.status(400).json({ error: 'contentType must be an image/* type' });
+  if (!ALLOWED_IMAGE_TYPES.includes(contentType)) {
+    return res.status(400).json({ error: 'contentType must be image/jpeg or image/png' });
   }
-  const ext = contentType.split('/')[1] || 'bin';
+  const ext = contentType === 'image/png' ? 'png' : 'jpg';
   const key = `uploads/${req.user.sub}/${crypto.randomUUID()}.${ext}`;
+  if (EVIDENCE_BUCKET) {
+    const uploadUrl = await getSignedUrl(
+      s3, new PutObjectCommand({ Bucket: EVIDENCE_BUCKET, Key: key, ContentType: contentType }),
+      { expiresIn: PRESIGN_SECONDS },
+    );
+    return res.json({ key, uploadUrl });
+  }
   const port = process.env.PORT || 3001;
   res.json({ key, uploadUrl: `http://localhost:${port}/api/complaints/uploads/raw/${encodeURIComponent(key)}` });
-});
+}));
 
-app.put('/api/complaints/uploads/raw/:key(*)', express.raw({ type: '*/*', limit: '6mb' }), (req, res) => {
-  const safeKey = req.params.key.replace(/\.\./g, '');
-  const dest = path.join(EVIDENCE_ROOT, safeKey);
-  fs.mkdirSync(path.dirname(dest), { recursive: true });
-  fs.writeFileSync(dest, req.body);
-  res.status(200).end();
-});
+// Adds a short-lived download link to each complaint that has a photo (AWS only).
+async function withImageUrls(rows) {
+  if (!EVIDENCE_BUCKET) return rows;
+  return Promise.all(rows.map(async (c) => (c.image_key
+    ? { ...c, imageUrl: await getSignedUrl(s3, new GetObjectCommand({ Bucket: EVIDENCE_BUCKET, Key: c.image_key }), { expiresIn: PRESIGN_SECONDS }) }
+    : c)));
+}
 
-// Fetching a file: GET /api/complaints/uploads/file/<key>, e.g.
-// /api/complaints/uploads/file/uploads/<userId>/<uuid>.jpg
-app.use('/api/complaints/uploads/file', express.static(EVIDENCE_ROOT));
+if (!EVIDENCE_BUCKET) {
+  const EVIDENCE_ROOT = path.join(__dirname, '..', 'data', 'evidence');
+  fs.mkdirSync(EVIDENCE_ROOT, { recursive: true });
+
+  app.put('/api/complaints/uploads/raw/:key(*)', express.raw({ type: '*/*', limit: '6mb' }), (req, res) => {
+    const safeKey = req.params.key.replace(/\.\./g, '');
+    const dest = path.join(EVIDENCE_ROOT, safeKey);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.writeFileSync(dest, req.body);
+    res.status(200).end();
+  });
+
+  // Fetching a file: GET /api/complaints/uploads/file/<key>, e.g.
+  // /api/complaints/uploads/file/uploads/<userId>/<uuid>.jpg
+  app.use('/api/complaints/uploads/file', express.static(EVIDENCE_ROOT));
+}
 
 // ======================================================================
 // Complaint lifecycle
@@ -139,7 +173,7 @@ app.get('/api/complaints', authenticate, asyncHandler(async (req, res) => {
   const { rows } = await pool.query(
     `SELECT * FROM complaint.complaints ${where} ORDER BY created_at DESC`, params,
   );
-  res.json(rows);
+  res.json(await withImageUrls(rows));
 }));
 
 app.get('/api/complaints/:id', authenticate, asyncHandler(async (req, res) => {
@@ -152,7 +186,8 @@ app.get('/api/complaints/:id', authenticate, asyncHandler(async (req, res) => {
   const { rows: notes } = await pool.query(
     'SELECT * FROM complaint.complaint_notes WHERE complaint_id = $1 ORDER BY created_at', [complaint.id],
   );
-  res.json({ ...complaint, history, notes });
+  const [withUrl] = await withImageUrls([complaint]);
+  res.json({ ...withUrl, history, notes });
 }));
 
 app.patch('/api/complaints/:id/assign', authenticate, requireRole('ADMIN'), asyncHandler(async (req, res) => {

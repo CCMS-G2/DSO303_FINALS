@@ -8,3 +8,4 @@ crash.log
 *.tfvars
 !example.tfvars
 backend.hcl
+.build/

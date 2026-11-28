@@ -7,6 +7,14 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 6.0"
     }
+    random = {
+      source  = "hashicorp/random" # database password and JWT secret
+      version = "~> 3.6"
+    }
+    archive = {
+      source  = "hashicorp/archive" # zips the notification Lambda package
+      version = "~> 2.4"
+    }
   }
 
   # Values (bucket, key, region) come from backend.hcl:
