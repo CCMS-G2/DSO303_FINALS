@@ -1,0 +1,4719 @@
+{
+  "format": "aws-architecture-lab",
+  "version": 2,
+  "applicationRelease": {
+    "version": "1.0.0",
+    "buildId": "185e1b23-5f1d-4707-b608-01f5e31bca34",
+    "channel": "stable",
+    "builtAt": "2026-10-23T05:04:29.452Z",
+    "draftVersion": 2
+  },
+  "savedAt": "2026-11-27T16:59:32.000Z",
+  "state": {
+    "draftName": "CCMS AWS Architecture v3",
+    "nodes": [
+      {
+        "id": "box-vpc",
+        "type": "boundaryNode",
+        "position": {
+          "x": 440,
+          "y": 0
+        },
+        "data": {
+          "label": "CCMS VPC 10.0.0.0/16 (ap-south-1a + ap-south-1b)",
+          "boundaryType": "vpc",
+          "width": 1040,
+          "height": 830,
+          "cidr": "10.0.0.0/16",
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "style": {
+          "width": 1040,
+          "height": 830
+        },
+        "draggable": false,
+        "selectable": true,
+        "zIndex": -4,
+        "measured": {
+          "width": 1040,
+          "height": 830
+        }
+      },
+      {
+        "id": "box-public-a",
+        "type": "boundaryNode",
+        "position": {
+          "x": 460,
+          "y": 25
+        },
+        "data": {
+          "label": "Public subnet AZ-a 10.0.1.0/24",
+          "boundaryType": "public_subnet",
+          "width": 480,
+          "height": 120,
+          "cidr": "10.0.1.0/24",
+          "totalAddresses": 256,
+          "usableHosts": 251,
+          "reservedAddresses": [
+            {
+              "ip": "10.0.1.0",
+              "offset": 0,
+              "role": "Network Address",
+              "description": "First address in the subnet. Identifies the network itself."
+            },
+            {
+              "ip": "10.0.1.1",
+              "offset": 1,
+              "role": "VPC Router",
+              "description": "Reserved by AWS for the default VPC router / subnet gateway."
+            },
+            {
+              "ip": "10.0.1.2",
+              "offset": 2,
+              "role": "Amazon-Provided DNS",
+              "description": "Reserved by AWS for the DNS resolver (Route 53 Resolver / AmazonProvidedDNS)."
+            },
+            {
+              "ip": "10.0.1.3",
+              "offset": 3,
+              "role": "AWS Future Use",
+              "description": "Reserved by AWS for potential future internal functionality."
+            },
+            {
+              "ip": "10.0.1.255",
+              "offset": 255,
+              "role": "Network Broadcast Address",
+              "description": "Last address in the subnet. AWS does not support broadcast in a VPC, but reserves the address."
+            }
+          ],
+          "usableRange": {
+            "start": "10.0.1.4",
+            "end": "10.0.1.254"
+          },
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "style": {
+          "width": 480,
+          "height": 120
+        },
+        "draggable": false,
+        "selectable": true,
+        "zIndex": -3,
+        "measured": {
+          "width": 480,
+          "height": 120
+        }
+      },
+      {
+        "id": "box-public-b",
+        "type": "boundaryNode",
+        "position": {
+          "x": 960,
+          "y": 25
+        },
+        "data": {
+          "label": "Public subnet AZ-b 10.0.2.0/24",
+          "boundaryType": "public_subnet",
+          "width": 480,
+          "height": 120,
+          "cidr": "10.0.2.0/24",
+          "totalAddresses": 256,
+          "usableHosts": 251,
+          "reservedAddresses": [
+            {
+              "ip": "10.0.2.0",
+              "offset": 0,
+              "role": "Network Address",
+              "description": "First address in the subnet. Identifies the network itself."
+            },
+            {
+              "ip": "10.0.2.1",
+              "offset": 1,
+              "role": "VPC Router",
+              "description": "Reserved by AWS for the default VPC router / subnet gateway."
+            },
+            {
+              "ip": "10.0.2.2",
+              "offset": 2,
+              "role": "Amazon-Provided DNS",
+              "description": "Reserved by AWS for the DNS resolver (Route 53 Resolver / AmazonProvidedDNS)."
+            },
+            {
+              "ip": "10.0.2.3",
+              "offset": 3,
+              "role": "AWS Future Use",
+              "description": "Reserved by AWS for potential future internal functionality."
+            },
+            {
+              "ip": "10.0.2.255",
+              "offset": 255,
+              "role": "Network Broadcast Address",
+              "description": "Last address in the subnet. AWS does not support broadcast in a VPC, but reserves the address."
+            }
+          ],
+          "usableRange": {
+            "start": "10.0.2.4",
+            "end": "10.0.2.254"
+          },
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "style": {
+          "width": 480,
+          "height": 120
+        },
+        "draggable": false,
+        "selectable": true,
+        "zIndex": -3,
+        "measured": {
+          "width": 480,
+          "height": 120
+        }
+      },
+      {
+        "id": "box-app-a",
+        "type": "boundaryNode",
+        "position": {
+          "x": 460,
+          "y": 155
+        },
+        "data": {
+          "label": "Private app subnet AZ-a 10.0.11.0/24",
+          "boundaryType": "private_subnet",
+          "width": 480,
+          "height": 460,
+          "cidr": "10.0.11.0/24",
+          "totalAddresses": 256,
+          "usableHosts": 251,
+          "reservedAddresses": [
+            {
+              "ip": "10.0.11.0",
+              "offset": 0,
+              "role": "Network Address",
+              "description": "First address in the subnet. Identifies the network itself."
+            },
+            {
+              "ip": "10.0.11.1",
+              "offset": 1,
+              "role": "VPC Router",
+              "description": "Reserved by AWS for the default VPC router / subnet gateway."
+            },
+            {
+              "ip": "10.0.11.2",
+              "offset": 2,
+              "role": "Amazon-Provided DNS",
+              "description": "Reserved by AWS for the DNS resolver (Route 53 Resolver / AmazonProvidedDNS)."
+            },
+            {
+              "ip": "10.0.11.3",
+              "offset": 3,
+              "role": "AWS Future Use",
+              "description": "Reserved by AWS for potential future internal functionality."
+            },
+            {
+              "ip": "10.0.11.255",
+              "offset": 255,
+              "role": "Network Broadcast Address",
+              "description": "Last address in the subnet. AWS does not support broadcast in a VPC, but reserves the address."
+            }
+          ],
+          "usableRange": {
+            "start": "10.0.11.4",
+            "end": "10.0.11.254"
+          },
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "style": {
+          "width": 480,
+          "height": 460
+        },
+        "draggable": false,
+        "selectable": true,
+        "zIndex": -3,
+        "measured": {
+          "width": 480,
+          "height": 460
+        }
+      },
+      {
+        "id": "box-app-b",
+        "type": "boundaryNode",
+        "position": {
+          "x": 960,
+          "y": 155
+        },
+        "data": {
+          "label": "Private app subnet AZ-b 10.0.12.0/24 (2nd task of each service, Lambda ENIs)",
+          "boundaryType": "private_subnet",
+          "width": 480,
+          "height": 460,
+          "cidr": "10.0.12.0/24",
+          "totalAddresses": 256,
+          "usableHosts": 251,
+          "reservedAddresses": [
+            {
+              "ip": "10.0.12.0",
+              "offset": 0,
+              "role": "Network Address",
+              "description": "First address in the subnet. Identifies the network itself."
+            },
+            {
+              "ip": "10.0.12.1",
+              "offset": 1,
+              "role": "VPC Router",
+              "description": "Reserved by AWS for the default VPC router / subnet gateway."
+            },
+            {
+              "ip": "10.0.12.2",
+              "offset": 2,
+              "role": "Amazon-Provided DNS",
+              "description": "Reserved by AWS for the DNS resolver (Route 53 Resolver / AmazonProvidedDNS)."
+            },
+            {
+              "ip": "10.0.12.3",
+              "offset": 3,
+              "role": "AWS Future Use",
+              "description": "Reserved by AWS for potential future internal functionality."
+            },
+            {
+              "ip": "10.0.12.255",
+              "offset": 255,
+              "role": "Network Broadcast Address",
+              "description": "Last address in the subnet. AWS does not support broadcast in a VPC, but reserves the address."
+            }
+          ],
+          "usableRange": {
+            "start": "10.0.12.4",
+            "end": "10.0.12.254"
+          },
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "style": {
+          "width": 480,
+          "height": 460
+        },
+        "draggable": false,
+        "selectable": true,
+        "zIndex": -3,
+        "measured": {
+          "width": 480,
+          "height": 460
+        }
+      },
+      {
+        "id": "box-db-a",
+        "type": "boundaryNode",
+        "position": {
+          "x": 460,
+          "y": 625
+        },
+        "data": {
+          "label": "Private DB subnet AZ-a 10.0.21.0/24",
+          "boundaryType": "private_subnet",
+          "width": 480,
+          "height": 180,
+          "cidr": "10.0.21.0/24",
+          "totalAddresses": 256,
+          "usableHosts": 251,
+          "reservedAddresses": [
+            {
+              "ip": "10.0.21.0",
+              "offset": 0,
+              "role": "Network Address",
+              "description": "First address in the subnet. Identifies the network itself."
+            },
+            {
+              "ip": "10.0.21.1",
+              "offset": 1,
+              "role": "VPC Router",
+              "description": "Reserved by AWS for the default VPC router / subnet gateway."
+            },
+            {
+              "ip": "10.0.21.2",
+              "offset": 2,
+              "role": "Amazon-Provided DNS",
+              "description": "Reserved by AWS for the DNS resolver (Route 53 Resolver / AmazonProvidedDNS)."
+            },
+            {
+              "ip": "10.0.21.3",
+              "offset": 3,
+              "role": "AWS Future Use",
+              "description": "Reserved by AWS for potential future internal functionality."
+            },
+            {
+              "ip": "10.0.21.255",
+              "offset": 255,
+              "role": "Network Broadcast Address",
+              "description": "Last address in the subnet. AWS does not support broadcast in a VPC, but reserves the address."
+            }
+          ],
+          "usableRange": {
+            "start": "10.0.21.4",
+            "end": "10.0.21.254"
+          },
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "style": {
+          "width": 480,
+          "height": 180
+        },
+        "draggable": false,
+        "selectable": true,
+        "zIndex": -3,
+        "measured": {
+          "width": 480,
+          "height": 180
+        }
+      },
+      {
+        "id": "box-db-b",
+        "type": "boundaryNode",
+        "position": {
+          "x": 960,
+          "y": 625
+        },
+        "data": {
+          "label": "Private DB subnet AZ-b 10.0.22.0/24 (DB subnet group; Multi-AZ standby not enabled)",
+          "boundaryType": "private_subnet",
+          "width": 480,
+          "height": 180,
+          "cidr": "10.0.22.0/24",
+          "totalAddresses": 256,
+          "usableHosts": 251,
+          "reservedAddresses": [
+            {
+              "ip": "10.0.22.0",
+              "offset": 0,
+              "role": "Network Address",
+              "description": "First address in the subnet. Identifies the network itself."
+            },
+            {
+              "ip": "10.0.22.1",
+              "offset": 1,
+              "role": "VPC Router",
+              "description": "Reserved by AWS for the default VPC router / subnet gateway."
+            },
+            {
+              "ip": "10.0.22.2",
+              "offset": 2,
+              "role": "Amazon-Provided DNS",
+              "description": "Reserved by AWS for the DNS resolver (Route 53 Resolver / AmazonProvidedDNS)."
+            },
+            {
+              "ip": "10.0.22.3",
+              "offset": 3,
+              "role": "AWS Future Use",
+              "description": "Reserved by AWS for potential future internal functionality."
+            },
+            {
+              "ip": "10.0.22.255",
+              "offset": 255,
+              "role": "Network Broadcast Address",
+              "description": "Last address in the subnet. AWS does not support broadcast in a VPC, but reserves the address."
+            }
+          ],
+          "usableRange": {
+            "start": "10.0.22.4",
+            "end": "10.0.22.254"
+          },
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "style": {
+          "width": 480,
+          "height": 180
+        },
+        "draggable": false,
+        "selectable": true,
+        "zIndex": -3,
+        "measured": {
+          "width": 480,
+          "height": 180
+        }
+      },
+      {
+        "id": "node-student",
+        "type": "serviceNode",
+        "position": {
+          "x": 0,
+          "y": 60
+        },
+        "data": {
+          "serviceId": "user",
+          "label": "Student",
+          "category": "Client / Ingress",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "role": "STUDENT",
+            "account": "self-registration with college email domain",
+            "canDo": [
+              "submit complaint (category, title, description, location)",
+              "attach up to 3 photos (JPEG/PNG, 5 MB)",
+              "list and filter own complaints",
+              "view status history and resolution notes",
+              "confirm fix -> Closed"
+            ],
+            "apis": [
+              "POST /api/auth/register",
+              "POST /api/auth/login",
+              "POST /api/complaints/uploads",
+              "POST /api/complaints",
+              "GET /api/complaints (own only)",
+              "GET /api/complaints/{id} (owner check)",
+              "PATCH /api/complaints/{id}/status (RESOLVED -> CLOSED)",
+              "GET /api/notifications"
+            ],
+            "cannotDo": [
+              "see other students' complaints",
+              "assign staff",
+              "view statistics",
+              "manage users"
+            ]
+          },
+          "width": 120,
+          "height": 98,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 120,
+          "height": 98
+        },
+        "style": {
+          "width": 120,
+          "height": 98
+        }
+      },
+      {
+        "id": "node-staff",
+        "type": "serviceNode",
+        "position": {
+          "x": 0,
+          "y": 260
+        },
+        "data": {
+          "serviceId": "user",
+          "label": "Staff",
+          "category": "Client / Ingress",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "role": "STAFF",
+            "account": "created by an administrator",
+            "canDo": [
+              "list complaints assigned to them",
+              "accept -> In Progress",
+              "add progress notes",
+              "resolve with required resolution note"
+            ],
+            "apis": [
+              "POST /api/auth/login",
+              "GET /api/complaints (assigned only)",
+              "GET /api/complaints/{id} (assignee check)",
+              "PATCH /api/complaints/{id}/status (ASSIGNED -> IN_PROGRESS -> RESOLVED)",
+              "POST /api/complaints/{id}/notes",
+              "GET /api/notifications"
+            ],
+            "cannotDo": [
+              "see unassigned complaints",
+              "assign or reassign",
+              "close complaints",
+              "manage users"
+            ]
+          },
+          "width": 120,
+          "height": 98,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 120,
+          "height": 98
+        },
+        "style": {
+          "width": 120,
+          "height": 98
+        }
+      },
+      {
+        "id": "node-admin",
+        "type": "serviceNode",
+        "position": {
+          "x": 0,
+          "y": 460
+        },
+        "data": {
+          "serviceId": "user",
+          "label": "Administrator",
+          "category": "Client / Ingress",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "role": "ADMIN",
+            "account": "first admin seeded at deployment; others created by an admin",
+            "canDo": [
+              "list all complaints with filters",
+              "assign / reassign staff",
+              "close resolved complaints",
+              "create, deactivate, change role of users",
+              "manage categories and locations",
+              "view statistics and overdue list"
+            ],
+            "apis": [
+              "POST /api/auth/login",
+              "GET /api/complaints (all)",
+              "PATCH /api/complaints/{id}/assign",
+              "PATCH /api/complaints/{id}/status (RESOLVED -> CLOSED)",
+              "GET, POST /api/users",
+              "PATCH /api/users/{id}",
+              "GET /api/stats/summary",
+              "GET /api/stats/overdue"
+            ],
+            "cannotDo": [
+              "move a complaint to In Progress or Resolved (staff only)"
+            ]
+          },
+          "width": 120,
+          "height": 98,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 120,
+          "height": 98
+        },
+        "style": {
+          "width": 120,
+          "height": 98
+        }
+      },
+      {
+        "id": "node-cloudfront",
+        "type": "serviceNode",
+        "position": {
+          "x": 220,
+          "y": -150
+        },
+        "data": {
+          "serviceId": "cloudfront",
+          "label": "CloudFront + S3 frontend bucket (OAC)",
+          "category": "Networking & Content Delivery",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "viewerProtocolPolicy": "redirect-to-https",
+            "originAccessControl": true,
+            "s3BlockPublicAccess": true,
+            "priceClass": "PriceClass_200",
+            "cachePolicy": "Managed-CachingOptimized",
+            "bucket": "ccms-frontend-<account-id>",
+            "files": [
+              "index.html",
+              "app.js",
+              "style.css",
+              "config.js (generated by Terraform: apiUrl)"
+            ],
+            "cacheControl": "no-cache (CloudFront revalidates, no invalidation needed)"
+          },
+          "width": 140,
+          "height": 98,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 140,
+          "height": 98
+        },
+        "style": {
+          "width": 140,
+          "height": 98
+        }
+      },
+      {
+        "id": "node-s3-evidence",
+        "type": "serviceNode",
+        "position": {
+          "x": 220,
+          "y": 60
+        },
+        "data": {
+          "serviceId": "s3",
+          "label": "S3 evidence bucket (photos)",
+          "category": "Storage",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "bucket": "ccms-evidence-<account-id>",
+            "blockPublicAccess": true,
+            "encryption": "SSE-S3 (AES256)",
+            "bucketPolicy": "deny non-TLS requests",
+            "cors": "PUT/GET from the CloudFront origin only",
+            "presignedUrlExpirySeconds": 300,
+            "allowedContentTypes": [
+              "image/jpeg",
+              "image/png"
+            ],
+            "keyPrefix": "uploads/",
+            "lifecycle": "abort incomplete multipart uploads",
+            "resourceArn": "arn:aws:s3:::ccms-evidence-111122223333"
+          },
+          "width": 140,
+          "height": 98,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 140,
+          "height": 98
+        },
+        "style": {
+          "width": 140,
+          "height": 98
+        }
+      },
+      {
+        "id": "node-apigw",
+        "type": "serviceNode",
+        "position": {
+          "x": 220,
+          "y": 260
+        },
+        "data": {
+          "serviceId": "api_gateway",
+          "label": "API Gateway HTTP API ($default stage)",
+          "category": "Networking & Content Delivery",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "routes": {
+              "ANY /api/{proxy+}": "VPC Link -> internal ALB :80 (path rules pick auth or complaint)",
+              "GET /api/notifications": "Lambda proxy -> ccms-notification-api",
+              "PATCH /api/notifications/{id}/read": "Lambda proxy -> ccms-notification-api"
+            },
+            "notExposed": "/internal/* (only reachable inside the VPC)",
+            "throttling": {
+              "rateLimit": 50,
+              "burstLimit": 100
+            },
+            "corsAllowOrigin": "https://<cloudfront-domain>",
+            "accessLogs": "/ccms/api-gateway (JSON)",
+            "vpcLink": "ccms VPC Link in both private app subnets, sg-vpclink -> sg-alb :80"
+          },
+          "width": 140,
+          "height": 115,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 140,
+          "height": 115
+        },
+        "style": {
+          "width": 140,
+          "height": 115
+        }
+      },
+      {
+        "id": "node-ses",
+        "type": "serviceNode",
+        "position": {
+          "x": 220,
+          "y": 660
+        },
+        "data": {
+          "serviceId": "ses",
+          "label": "Amazon SES (email)",
+          "category": "Business Applications",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "sender": "terraform.tfvars ses_sender_email (verified identity)",
+            "sandbox": "new accounts can only email verified addresses",
+            "ifUnset": "emails are skipped; in-app notifications still work"
+          },
+          "width": 130,
+          "height": 81,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 130,
+          "height": 81
+        },
+        "style": {
+          "width": 130,
+          "height": 81
+        }
+      },
+      {
+        "id": "node-igw",
+        "type": "serviceNode",
+        "position": {
+          "x": 480,
+          "y": 45
+        },
+        "data": {
+          "serviceId": "internet_gateway",
+          "label": "Internet Gateway",
+          "category": "Networking & Content Delivery",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "public",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "routeTable": "public: 0.0.0.0/0 -> igw"
+          },
+          "width": 110,
+          "height": 81,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 110,
+          "height": 81
+        },
+        "style": {
+          "width": 110,
+          "height": 81
+        }
+      },
+      {
+        "id": "node-nat",
+        "type": "serviceNode",
+        "position": {
+          "x": 700,
+          "y": 45
+        },
+        "data": {
+          "serviceId": "nat_gateway",
+          "label": "NAT Gateway (single, AZ-a)",
+          "category": "Networking & Content Delivery",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "public",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "elasticIp": true,
+            "routeTable": "private-app: 0.0.0.0/0 -> nat",
+            "note": "one NAT to save cost; a NAT per AZ would remove this single point of failure"
+          },
+          "width": 110,
+          "height": 81,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 110,
+          "height": 81
+        },
+        "style": {
+          "width": 110,
+          "height": 81
+        }
+      },
+      {
+        "id": "node-vpclink",
+        "type": "serviceNode",
+        "position": {
+          "x": 480,
+          "y": 185
+        },
+        "data": {
+          "serviceId": "vpc_link",
+          "label": "API Gateway VPC Link (carries API GW -> ALB traffic)",
+          "category": "Networking & Content Delivery",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "private",
+          "replicas": 1,
+          "multiAz": true,
+          "customConfig": {
+            "subnets": "both private app subnets",
+            "securityGroup": "sg-vpclink (out 80 -> sg-alb)"
+          },
+          "width": 130,
+          "height": 81,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 130,
+          "height": 81
+        },
+        "style": {
+          "width": 130,
+          "height": 81
+        }
+      },
+      {
+        "id": "node-alb",
+        "type": "serviceNode",
+        "position": {
+          "x": 480,
+          "y": 330
+        },
+        "data": {
+          "serviceId": "alb",
+          "label": "Internal ALB (path-based routing)",
+          "category": "Networking & Content Delivery",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "private",
+          "replicas": 1,
+          "multiAz": true,
+          "customConfig": {
+            "scheme": "internal",
+            "listener": "HTTP :80",
+            "securityGroup": "sg-alb (in 80: sg-vpclink, sg-ecs, sg-lambda)",
+            "rules": {
+              "/api/auth/*, /api/users, /api/users/*, /internal/users/*": "ccms-auth-tg (:3000)",
+              "/api/complaints, /api/complaints/*, /api/categories, /api/locations, /api/stats/*": "ccms-complaint-tg (:3001)"
+            },
+            "healthCheckPath": "/health",
+            "healthyThreshold": 2,
+            "unhealthyThreshold": 3
+          },
+          "width": 150,
+          "height": 115,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 150,
+          "height": 115
+        },
+        "style": {
+          "width": 150,
+          "height": 115
+        }
+      },
+      {
+        "id": "node-migrate",
+        "type": "serviceNode",
+        "position": {
+          "x": 480,
+          "y": 500
+        },
+        "data": {
+          "serviceId": "ecs",
+          "label": "ECS one-off task: ccms-migrate (db/init.sql)",
+          "category": "Compute",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "private",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "taskDefinition": "ccms-migrate",
+            "image": "public.ecr.aws/docker/library/postgres:16-alpine",
+            "command": "echo $INIT_SQL_B64 | base64 -d | psql $PSQL_URL -v ON_ERROR_STOP=1",
+            "startedBy": "scripts/aws-up.sh (once per fresh database)",
+            "secrets": [
+              "ccms/database:psql_url"
+            ],
+            "logs": "/ccms/migrate"
+          },
+          "width": 150,
+          "height": 98,
+          "isSimulating": false,
+          "simulationStatus": "idle",
+          "iamRole": {
+            "id": "EcsExecutionRole",
+            "trustPolicy": {
+              "id": "EcsExecutionRoleTrust",
+              "kind": "trust",
+              "statements": [
+                {
+                  "effect": "Allow",
+                  "actions": [
+                    "sts:AssumeRole"
+                  ],
+                  "principals": [
+                    "ecs-tasks.amazonaws.com"
+                  ],
+                  "resources": [
+                    "*"
+                  ]
+                }
+              ]
+            },
+            "identityPolicies": [
+              {
+                "id": "EcsExecutionRolePermissions",
+                "kind": "identity",
+                "statements": [
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "secretsmanager:GetSecretValue"
+                    ],
+                    "resources": [
+                      "arn:aws:secretsmanager:ap-south-1:111122223333:secret:ccms/database-*"
+                    ]
+                  },
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "resources": [
+                      "arn:aws:logs:ap-south-1:111122223333:log-group:/ccms/migrate:*"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 150,
+          "height": 98
+        },
+        "style": {
+          "width": 150,
+          "height": 98
+        }
+      },
+      {
+        "id": "node-ecs-auth",
+        "type": "serviceNode",
+        "position": {
+          "x": 700,
+          "y": 175
+        },
+        "data": {
+          "serviceId": "ecs",
+          "label": "Auth Service (ECS Fargate, 2-4 tasks across AZs)",
+          "category": "Compute",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "private",
+          "replicas": 2,
+          "multiAz": true,
+          "customConfig": {
+            "cluster": "ccms-cluster (Container Insights)",
+            "deployment": "ECS rolling update + circuit breaker (rollback)",
+            "containerPort": 3000,
+            "desiredCount": 2,
+            "autoScaling": {
+              "min": 2,
+              "max": 4,
+              "targetCpuPercent": 60
+            },
+            "cpu": 256,
+            "memory": 512,
+            "image": "ccms/auth-service:<git-sha>",
+            "securityGroup": "sg-ecs (in 3000/3001 from sg-alb)",
+            "secretsFromSecretsManager": [
+              "ccms/database:url",
+              "ccms/jwt-secret"
+            ],
+            "auth": "bcrypt password hashes, JWT (HS256, 1 h) with sub + role",
+            "logs": "/ccms/auth-service"
+          },
+          "iamRole": {
+            "id": "AuthTaskRole",
+            "trustPolicy": {
+              "id": "AuthTaskRoleTrust",
+              "kind": "trust",
+              "statements": [
+                {
+                  "effect": "Allow",
+                  "actions": [
+                    "sts:AssumeRole"
+                  ],
+                  "principals": [
+                    "ecs-tasks.amazonaws.com"
+                  ],
+                  "resources": [
+                    "*"
+                  ]
+                }
+              ]
+            },
+            "identityPolicies": [
+              {
+                "id": "AuthTaskRolePermissions",
+                "kind": "identity",
+                "statements": [
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "resources": [
+                      "arn:aws:logs:ap-south-1:111122223333:log-group:/ccms/auth-service:*"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "width": 150,
+          "height": 115,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 150,
+          "height": 115
+        },
+        "style": {
+          "width": 150,
+          "height": 115
+        }
+      },
+      {
+        "id": "node-ecs-complaint",
+        "type": "serviceNode",
+        "position": {
+          "x": 700,
+          "y": 420
+        },
+        "data": {
+          "serviceId": "ecs",
+          "label": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "category": "Compute",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "private",
+          "replicas": 2,
+          "multiAz": true,
+          "customConfig": {
+            "cluster": "ccms-cluster (Container Insights)",
+            "deployment": "ECS rolling update + circuit breaker (rollback)",
+            "containerPort": 3001,
+            "desiredCount": 2,
+            "autoScaling": {
+              "min": 2,
+              "max": 4,
+              "targetCpuPercent": 60
+            },
+            "cpu": 256,
+            "memory": 512,
+            "image": "ccms/complaint-service:<git-sha>",
+            "securityGroup": "sg-ecs",
+            "secretsFromSecretsManager": [
+              "ccms/database:url",
+              "ccms/jwt-secret"
+            ],
+            "env": {
+              "AUTH_SERVICE_URL": "http://<internal-alb-dns>",
+              "EVIDENCE_BUCKET": "ccms-evidence-<account-id>",
+              "COMPLAINT_EVENTS_QUEUE_URL": "ccms-complaint-events"
+            },
+            "logs": "/ccms/complaint-service"
+          },
+          "iamRole": {
+            "id": "ComplaintTaskRole",
+            "trustPolicy": {
+              "id": "ComplaintTaskRoleTrust",
+              "kind": "trust",
+              "statements": [
+                {
+                  "effect": "Allow",
+                  "actions": [
+                    "sts:AssumeRole"
+                  ],
+                  "principals": [
+                    "ecs-tasks.amazonaws.com"
+                  ],
+                  "resources": [
+                    "*"
+                  ]
+                }
+              ]
+            },
+            "identityPolicies": [
+              {
+                "id": "ComplaintTaskRolePermissions",
+                "kind": "identity",
+                "statements": [
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "s3:PutObject",
+                      "s3:GetObject"
+                    ],
+                    "resources": [
+                      "arn:aws:s3:::ccms-evidence-111122223333/uploads/*"
+                    ]
+                  },
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "sqs:SendMessage"
+                    ],
+                    "resources": [
+                      "arn:aws:sqs:ap-south-1:111122223333:ccms-complaint-events"
+                    ]
+                  },
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "resources": [
+                      "arn:aws:logs:ap-south-1:111122223333:log-group:/ccms/complaint-service:*"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "width": 150,
+          "height": 115,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 150,
+          "height": 115
+        },
+        "style": {
+          "width": 150,
+          "height": 115
+        }
+      },
+      {
+        "id": "node-lambda-api",
+        "type": "serviceNode",
+        "position": {
+          "x": 1000,
+          "y": 200
+        },
+        "data": {
+          "serviceId": "lambda",
+          "label": "Notification API Lambda (ccms-notification-api)",
+          "category": "Compute",
+          "health": "healthy",
+          "az": "AZ-B",
+          "subnet": "private",
+          "replicas": 1,
+          "multiAz": true,
+          "customConfig": {
+            "handler": "src/lambda.api",
+            "runtime": "nodejs22.x (arm64)",
+            "memoryMb": 256,
+            "timeoutSeconds": 10,
+            "routes": [
+              "GET /api/notifications",
+              "PATCH /api/notifications/{id}/read"
+            ],
+            "auth": "verifies the JWT itself",
+            "tracing": "X-Ray Active",
+            "securityGroup": "sg-lambda",
+            "resourceArn": "arn:aws:lambda:ap-south-1:111122223333:function:ccms-notification-api"
+          },
+          "iamRole": {
+            "id": "NotificationApiRole",
+            "trustPolicy": {
+              "id": "NotificationApiRoleTrust",
+              "kind": "trust",
+              "statements": [
+                {
+                  "effect": "Allow",
+                  "actions": [
+                    "sts:AssumeRole"
+                  ],
+                  "principals": [
+                    "lambda.amazonaws.com"
+                  ],
+                  "resources": [
+                    "*"
+                  ]
+                }
+              ]
+            },
+            "identityPolicies": [
+              {
+                "id": "NotificationApiRolePermissions",
+                "kind": "identity",
+                "statements": [
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "secretsmanager:GetSecretValue"
+                    ],
+                    "resources": [
+                      "arn:aws:secretsmanager:ap-south-1:111122223333:secret:ccms/database-*",
+                      "arn:aws:secretsmanager:ap-south-1:111122223333:secret:ccms/jwt-secret-*"
+                    ]
+                  },
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "xray:PutTraceSegments",
+                      "xray:PutTelemetryRecords"
+                    ],
+                    "resources": [
+                      "*"
+                    ]
+                  },
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "ec2:CreateNetworkInterface",
+                      "ec2:DescribeNetworkInterfaces",
+                      "ec2:DeleteNetworkInterface"
+                    ],
+                    "resources": [
+                      "*"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "width": 150,
+          "height": 115,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 150,
+          "height": 115
+        },
+        "style": {
+          "width": 150,
+          "height": 115
+        }
+      },
+      {
+        "id": "node-lambda-notify",
+        "type": "serviceNode",
+        "position": {
+          "x": 1000,
+          "y": 420
+        },
+        "data": {
+          "serviceId": "lambda",
+          "label": "Notification consumer Lambda (ccms-notification-consumer)",
+          "category": "Compute",
+          "health": "healthy",
+          "az": "AZ-B",
+          "subnet": "private",
+          "replicas": 1,
+          "multiAz": true,
+          "customConfig": {
+            "handler": "src/lambda.consumer",
+            "runtime": "nodejs22.x (arm64)",
+            "memoryMb": 256,
+            "timeoutSeconds": 30,
+            "eventSource": {
+              "batchSize": 10,
+              "maxBatchingWindowSeconds": 0,
+              "maximumConcurrency": 5,
+              "reportBatchItemFailures": true
+            },
+            "idempotencyKey": "notifications UNIQUE (event_id, user_id)",
+            "recipientLookup": "GET /internal/users/{id} on the internal ALB -> Auth Service",
+            "metric": "NotificationsSent (CloudWatch EMF)",
+            "tracing": "X-Ray Active",
+            "securityGroup": "sg-lambda (out 80 -> sg-alb, 5432 -> sg-rds, 443 out)",
+            "resourceArn": "arn:aws:lambda:ap-south-1:111122223333:function:ccms-notification-consumer"
+          },
+          "iamRole": {
+            "id": "NotificationConsumerRole",
+            "trustPolicy": {
+              "id": "NotificationConsumerRoleTrust",
+              "kind": "trust",
+              "statements": [
+                {
+                  "effect": "Allow",
+                  "actions": [
+                    "sts:AssumeRole"
+                  ],
+                  "principals": [
+                    "lambda.amazonaws.com"
+                  ],
+                  "resources": [
+                    "*"
+                  ]
+                }
+              ]
+            },
+            "identityPolicies": [
+              {
+                "id": "NotificationConsumerRolePermissions",
+                "kind": "identity",
+                "statements": [
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "sqs:ReceiveMessage",
+                      "sqs:DeleteMessage",
+                      "sqs:GetQueueAttributes",
+                      "sqs:ChangeMessageVisibility"
+                    ],
+                    "resources": [
+                      "arn:aws:sqs:ap-south-1:111122223333:ccms-complaint-events"
+                    ]
+                  },
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "ses:SendEmail"
+                    ],
+                    "resources": [
+                      "arn:aws:ses:ap-south-1:111122223333:identity/*"
+                    ]
+                  },
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "secretsmanager:GetSecretValue"
+                    ],
+                    "resources": [
+                      "arn:aws:secretsmanager:ap-south-1:111122223333:secret:ccms/database-*"
+                    ]
+                  },
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "xray:PutTraceSegments",
+                      "xray:PutTelemetryRecords"
+                    ],
+                    "resources": [
+                      "*"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "width": 150,
+          "height": 115,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 150,
+          "height": 115
+        },
+        "style": {
+          "width": 150,
+          "height": 115
+        }
+      },
+      {
+        "id": "node-s3-endpoint",
+        "type": "serviceNode",
+        "position": {
+          "x": 1260,
+          "y": 330
+        },
+        "data": {
+          "serviceId": "s3_gateway_endpoint",
+          "label": "S3 gateway endpoint",
+          "category": "Networking & Content Delivery",
+          "health": "healthy",
+          "az": "AZ-B",
+          "subnet": "private",
+          "replicas": 1,
+          "multiAz": true,
+          "customConfig": {
+            "type": "Gateway",
+            "service": "com.amazonaws.ap-south-1.s3",
+            "routeTables": [
+              "private-app"
+            ],
+            "cost": "free",
+            "why": "ECR image layers and S3 traffic skip the NAT Gateway"
+          },
+          "width": 130,
+          "height": 81,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 130,
+          "height": 81
+        },
+        "style": {
+          "width": 130,
+          "height": 81
+        }
+      },
+      {
+        "id": "node-rds",
+        "type": "serviceNode",
+        "position": {
+          "x": 700,
+          "y": 660
+        },
+        "data": {
+          "serviceId": "rds",
+          "label": "RDS PostgreSQL 16 (db.t4g.micro, single-AZ)",
+          "category": "Database",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "private",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "identifier": "ccms-postgres",
+            "engineVersion": "16",
+            "instanceClass": "db.t4g.micro",
+            "storage": "gp3 20 GB, encrypted",
+            "multiAz": false,
+            "publiclyAccessible": false,
+            "backupRetentionDays": 1,
+            "schemas": [
+              "auth",
+              "complaint",
+              "notification"
+            ],
+            "securityGroup": "sg-rds (in 5432: sg-ecs, sg-lambda)",
+            "credentials": "random password stored in Secrets Manager ccms/database"
+          },
+          "width": 160,
+          "height": 115,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 160,
+          "height": 115
+        },
+        "style": {
+          "width": 160,
+          "height": 115
+        }
+      },
+      {
+        "id": "node-sqs",
+        "type": "serviceNode",
+        "position": {
+          "x": 1540,
+          "y": 160
+        },
+        "data": {
+          "serviceId": "sqs",
+          "label": "SQS ccms-complaint-events (SUBMITTED / ASSIGNED / STATUS_CHANGED)",
+          "category": "Application Integration",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "visibilityTimeoutSeconds": 180,
+            "encryption": "SSE-SQS",
+            "redrivePolicy": {
+              "deadLetterQueue": "ccms-complaint-events-dlq",
+              "maxReceiveCount": 3
+            },
+            "events": {
+              "COMPLAINT_SUBMITTED": "Student created a complaint -> email + in-app to the student",
+              "COMPLAINT_ASSIGNED": "Admin assigned staff -> email to the staff member, in-app to the student",
+              "COMPLAINT_STATUS_CHANGED": "IN_PROGRESS / RESOLVED / CLOSED -> email + in-app to the student"
+            },
+            "resourceArn": "arn:aws:sqs:ap-south-1:111122223333:ccms-complaint-events"
+          },
+          "width": 140,
+          "height": 98,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 140,
+          "height": 98
+        },
+        "style": {
+          "width": 140,
+          "height": 98
+        }
+      },
+      {
+        "id": "node-dlq",
+        "type": "serviceNode",
+        "position": {
+          "x": 1540,
+          "y": 320
+        },
+        "data": {
+          "serviceId": "sqs",
+          "label": "SQS DLQ ccms-complaint-events-dlq",
+          "category": "Application Integration",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "encryption": "SSE-SQS",
+            "redriveAllowPolicy": "only ccms-complaint-events",
+            "alarm": "ccms-dlq-not-empty",
+            "resourceArn": "arn:aws:sqs:ap-south-1:111122223333:ccms-complaint-events-dlq"
+          },
+          "width": 140,
+          "height": 98,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 140,
+          "height": 98
+        },
+        "style": {
+          "width": 140,
+          "height": 98
+        }
+      },
+      {
+        "id": "node-xray",
+        "type": "serviceNode",
+        "position": {
+          "x": 1540,
+          "y": 480
+        },
+        "data": {
+          "serviceId": "xray",
+          "label": "AWS X-Ray (Lambda traces)",
+          "category": "Management & Governance",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "tracingMode": "Active",
+            "functions": [
+              "ccms-notification-consumer",
+              "ccms-notification-api"
+            ]
+          },
+          "width": 140,
+          "height": 98,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 140,
+          "height": 98
+        },
+        "style": {
+          "width": 140,
+          "height": 98
+        }
+      },
+      {
+        "id": "node-secrets",
+        "type": "serviceNode",
+        "position": {
+          "x": 1540,
+          "y": 640
+        },
+        "data": {
+          "serviceId": "secrets_manager",
+          "label": "Secrets Manager",
+          "category": "Security, Identity & Compliance",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "secrets": {
+              "ccms/database": "url, psql_url, host, port, dbname, username, password",
+              "ccms/jwt-secret": "random 64-character signing key"
+            },
+            "injection": "ECS valueFrom <arn>:url:: ; Lambda reads at cold start",
+            "recoveryWindowDays": 0,
+            "resourceArn": "arn:aws:secretsmanager:ap-south-1:111122223333:secret:ccms/database-AbCdEf"
+          },
+          "width": 150,
+          "height": 98,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 150,
+          "height": 98
+        },
+        "style": {
+          "width": 150,
+          "height": 98
+        }
+      },
+      {
+        "id": "node-alarm",
+        "type": "serviceNode",
+        "position": {
+          "x": 1080,
+          "y": 885
+        },
+        "data": {
+          "serviceId": "cloudwatch",
+          "label": "CloudWatch (logs, metrics, 10 alarms, CCMS-Overview dashboard)",
+          "category": "Management & Governance",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "alarms": [
+              "ccms-api-5xx",
+              "ccms-auth-unhealthy-targets",
+              "ccms-complaint-unhealthy-targets",
+              "ccms-auth-cpu-high",
+              "ccms-complaint-cpu-high",
+              "ccms-dlq-not-empty",
+              "ccms-event-backlog",
+              "ccms-notification-errors",
+              "ccms-rds-cpu-high",
+              "ccms-rds-storage-low"
+            ],
+            "dashboard": "CCMS-Overview",
+            "logGroups": [
+              "/ccms/auth-service",
+              "/ccms/complaint-service",
+              "/ccms/migrate",
+              "/ccms/api-gateway",
+              "/aws/lambda/ccms-notification-*",
+              "/aws/codebuild/ccms-*"
+            ],
+            "logRetentionDays": 14,
+            "containerInsights": true
+          },
+          "width": 150,
+          "height": 115,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 150,
+          "height": 115
+        },
+        "style": {
+          "width": 150,
+          "height": 115
+        }
+      },
+      {
+        "id": "node-sns",
+        "type": "serviceNode",
+        "position": {
+          "x": 1280,
+          "y": 885
+        },
+        "data": {
+          "serviceId": "sns",
+          "label": "SNS ccms-alerts",
+          "category": "Application Integration",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "subscription": "email (terraform.tfvars alert_email)",
+            "sources": "all CloudWatch alarms (ALARM and OK)",
+            "resourceArn": "arn:aws:sns:ap-south-1:111122223333:ccms-alerts"
+          },
+          "width": 130,
+          "height": 98,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 130,
+          "height": 98
+        },
+        "style": {
+          "width": 130,
+          "height": 98
+        }
+      },
+      {
+        "id": "node-budget",
+        "type": "serviceNode",
+        "position": {
+          "x": 1280,
+          "y": 1040
+        },
+        "data": {
+          "serviceId": "budgets",
+          "label": "AWS Budgets ($20/month)",
+          "category": "Management & Governance",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "limitUsd": 20,
+            "alert": "80% of forecast -> alert email"
+          },
+          "width": 130,
+          "height": 81,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 130,
+          "height": 81
+        },
+        "style": {
+          "width": 130,
+          "height": 81
+        }
+      },
+      {
+        "id": "node-dev",
+        "type": "serviceNode",
+        "position": {
+          "x": 0,
+          "y": 900
+        },
+        "data": {
+          "serviceId": "developer",
+          "label": "Developer (team member)",
+          "category": "Third-Party & External",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "workflow": "feature branch -> pull request -> teammate review -> merge to main",
+            "infrastructure": "Terraform from own laptop: scripts/aws-up.sh / scripts/aws-down.sh",
+            "credentials": "personal AWS profile 'ccms' in ~/.aws, never in Git",
+            "personalFiles (git-ignored)": [
+              ".env",
+              "backend.hcl",
+              "terraform.tfvars"
+            ]
+          },
+          "width": 110,
+          "height": 81,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 110,
+          "height": 81
+        },
+        "style": {
+          "width": 110,
+          "height": 81
+        }
+      },
+      {
+        "id": "node-repo",
+        "type": "serviceNode",
+        "position": {
+          "x": 150,
+          "y": 885
+        },
+        "data": {
+          "serviceId": "github",
+          "label": "GitHub repo CCMS-G2/DSO303_FINALS",
+          "category": "Third-Party & External",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "provider": "GitHub via AWS CodeConnections (ccms-github)",
+            "branch": "main",
+            "reviews": "pull requests reviewed by a teammate",
+            "recommended": "turn on branch protection for main (Settings -> Branches)",
+            "pathTriggers": {
+              "services/auth-service/**": "ccms-auth-service pipeline",
+              "services/complaint-service/**": "ccms-complaint-service pipeline"
+            }
+          },
+          "width": 150,
+          "height": 115,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 150,
+          "height": 115
+        },
+        "style": {
+          "width": 150,
+          "height": 115
+        }
+      },
+      {
+        "id": "node-pipeline",
+        "type": "serviceNode",
+        "position": {
+          "x": 330,
+          "y": 900
+        },
+        "data": {
+          "serviceId": "codepipeline",
+          "label": "CodePipeline V2 (one per service)",
+          "category": "Developer Tools",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "pipelines": [
+              "ccms-auth-service",
+              "ccms-complaint-service"
+            ],
+            "stages": [
+              "Source (GitHub, file-path trigger)",
+              "Build (CodeBuild)",
+              "Deploy (Amazon ECS action, imagedefinitions.json)"
+            ],
+            "artifactStore": "S3 artifacts bucket, objects expire after 14 days"
+          },
+          "iamRole": {
+            "id": "CcmsPipelineRole",
+            "trustPolicy": {
+              "id": "CcmsPipelineRoleTrust",
+              "kind": "trust",
+              "statements": [
+                {
+                  "effect": "Allow",
+                  "actions": [
+                    "sts:AssumeRole"
+                  ],
+                  "principals": [
+                    "codepipeline.amazonaws.com"
+                  ],
+                  "resources": [
+                    "*"
+                  ]
+                }
+              ]
+            },
+            "identityPolicies": [
+              {
+                "id": "CcmsPipelineRolePermissions",
+                "kind": "identity",
+                "statements": [
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "codeconnections:UseConnection",
+                      "codestar-connections:UseConnection"
+                    ],
+                    "resources": [
+                      "<ccms-github connection arn>"
+                    ]
+                  },
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "codebuild:StartBuild",
+                      "codebuild:BatchGetBuilds"
+                    ],
+                    "resources": [
+                      "arn:aws:codebuild:ap-south-1:111122223333:project/ccms-*"
+                    ]
+                  },
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "ecs:DescribeServices",
+                      "ecs:DescribeTaskDefinition",
+                      "ecs:RegisterTaskDefinition",
+                      "ecs:UpdateService"
+                    ],
+                    "resources": [
+                      "*"
+                    ]
+                  },
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "iam:PassRole"
+                    ],
+                    "resources": [
+                      "ECS execution role",
+                      "ECS task roles"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "width": 130,
+          "height": 81,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 130,
+          "height": 81
+        },
+        "style": {
+          "width": 130,
+          "height": 81
+        }
+      },
+      {
+        "id": "node-build",
+        "type": "serviceNode",
+        "position": {
+          "x": 500,
+          "y": 890
+        },
+        "data": {
+          "serviceId": "codebuild",
+          "label": "CodeBuild: audit + build + push",
+          "category": "Developer Tools",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "projects": [
+              "ccms-auth-service",
+              "ccms-complaint-service"
+            ],
+            "buildspec": "services/<service>/buildspec.yml",
+            "image": "aws/codebuild/amazonlinux-x86_64-standard:5.0",
+            "privilegedMode": true,
+            "steps": [
+              "npm ci",
+              "npm audit --omit=dev --audit-level=high (fails the build)",
+              "npm test --if-present",
+              "docker build (node:22-alpine from public.ecr.aws)",
+              "docker push :<git-sha> and :latest",
+              "write imagedefinitions.json"
+            ],
+            "outputArtifacts": [
+              "imagedefinitions.json"
+            ]
+          },
+          "iamRole": {
+            "id": "CcmsBuildRole",
+            "trustPolicy": {
+              "id": "CcmsBuildRoleTrust",
+              "kind": "trust",
+              "statements": [
+                {
+                  "effect": "Allow",
+                  "actions": [
+                    "sts:AssumeRole"
+                  ],
+                  "principals": [
+                    "codebuild.amazonaws.com"
+                  ],
+                  "resources": [
+                    "*"
+                  ]
+                }
+              ]
+            },
+            "identityPolicies": [
+              {
+                "id": "CcmsBuildRolePermissions",
+                "kind": "identity",
+                "statements": [
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "logs:CreateLogGroup",
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "resources": [
+                      "arn:aws:logs:ap-south-1:111122223333:log-group:/aws/codebuild/ccms-*:*"
+                    ]
+                  },
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "s3:GetObject",
+                      "s3:PutObject",
+                      "s3:GetObjectVersion"
+                    ],
+                    "resources": [
+                      "arn:aws:s3:::<pipeline-artifacts-bucket>/*"
+                    ]
+                  },
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "ecr:GetAuthorizationToken"
+                    ],
+                    "resources": [
+                      "*"
+                    ]
+                  },
+                  {
+                    "effect": "Allow",
+                    "actions": [
+                      "ecr:BatchCheckLayerAvailability",
+                      "ecr:InitiateLayerUpload",
+                      "ecr:UploadLayerPart",
+                      "ecr:CompleteLayerUpload",
+                      "ecr:PutImage",
+                      "ecr:BatchGetImage"
+                    ],
+                    "resources": [
+                      "arn:aws:ecr:ap-south-1:111122223333:repository/ccms/auth-service",
+                      "arn:aws:ecr:ap-south-1:111122223333:repository/ccms/complaint-service"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "width": 140,
+          "height": 98,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 140,
+          "height": 98
+        },
+        "style": {
+          "width": 140,
+          "height": 98
+        }
+      },
+      {
+        "id": "node-ecr",
+        "type": "serviceNode",
+        "position": {
+          "x": 520,
+          "y": 1080
+        },
+        "data": {
+          "serviceId": "ecr_registry",
+          "label": "Amazon ECR (ccms/auth-service, ccms/complaint-service)",
+          "category": "Containers",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "scanOnPush": true,
+            "imageTagMutability": "MUTABLE (latest moves; :<git-sha> tags kept for rollback)",
+            "lifecyclePolicy": "keep last 10 images",
+            "forceDelete": true
+          },
+          "width": 140,
+          "height": 98,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 140,
+          "height": 98
+        },
+        "style": {
+          "width": 140,
+          "height": 98
+        }
+      },
+      {
+        "id": "node-cloudtrail",
+        "type": "serviceNode",
+        "position": {
+          "x": 150,
+          "y": 1080
+        },
+        "data": {
+          "serviceId": "cloudtrail",
+          "label": "CloudTrail event history (audit)",
+          "category": "Management & Governance",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "customConfig": {
+            "type": "default 90-day event history (no extra trail, no cost)",
+            "records": "who started which pipeline, updated which ECS service, and when"
+          },
+          "width": 140,
+          "height": 115,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 140,
+          "height": 115
+        },
+        "style": {
+          "width": 140,
+          "height": 115
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e-student-cf",
+        "source": "node-student",
+        "target": "node-cloudfront",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTPS",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student"
+          ],
+          "flowExplanation": "CloudFront serves index.html, app.js and config.js from the private frontend bucket (OAC) over HTTPS.",
+          "steps": [
+            1
+          ],
+          "flowStepNumber": 1,
+          "flowStepIndex": 0,
+          "flowAction": "1. [STUDENT] Open CCMS web app",
+          "flowLatency": 40
+        }
+      },
+      {
+        "id": "e-student-apigw",
+        "source": "node-student",
+        "target": "node-apigw",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTPS",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student"
+          ],
+          "flowExplanation": "The browser calls the API Gateway URL from config.js; CORS only allows the CloudFront origin.",
+          "steps": [
+            2,
+            6,
+            10,
+            20,
+            63
+          ],
+          "flowStepNumber": 2,
+          "flowStepIndex": 1,
+          "flowAction": "2. [STUDENT] POST /api/auth/login",
+          "flowLatency": 40,
+          "stepNumber": 1
+        }
+      },
+      {
+        "id": "e-staff-apigw",
+        "source": "node-staff",
+        "target": "node-apigw",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTPS",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "staff"
+          ],
+          "flowExplanation": "Staff accepts the complaint. This request is already served by the new version; users did not notice the release.",
+          "steps": [
+            43,
+            53
+          ],
+          "flowStepNumber": 43,
+          "flowStepIndex": 42,
+          "flowAction": "43. [STAFF] PATCH /status -> IN_PROGRESS",
+          "flowLatency": 40
+        }
+      },
+      {
+        "id": "e-admin-apigw",
+        "source": "node-admin",
+        "target": "node-apigw",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTPS",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "admin"
+          ],
+          "flowExplanation": "Admin opens the dashboard (same app, admin view from the JWT role) and picks a staff member.",
+          "steps": [
+            23
+          ],
+          "flowStepNumber": 23,
+          "flowStepIndex": 22,
+          "flowAction": "23. [ADMIN] PATCH /api/complaints/{id}/assign",
+          "flowLatency": 40
+        }
+      },
+      {
+        "id": "e-student-s3",
+        "source": "node-student",
+        "target": "node-s3-evidence",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTPS",
+          "interactionType": "synchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student"
+          ],
+          "flowExplanation": "URL valid 300 s for uploads/<key>. The file goes straight to S3 and never passes through the containers.",
+          "steps": [
+            9
+          ],
+          "flowStepNumber": 9,
+          "flowStepIndex": 8,
+          "flowAction": "9. [STUDENT] PUT photo with pre-signed URL",
+          "flowLatency": 300
+        }
+      },
+      {
+        "id": "e-alb-auth",
+        "source": "node-alb",
+        "target": "node-ecs-auth",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTP",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "ALB forwards to a healthy auth task in AZ-a or AZ-b.",
+          "steps": [
+            4
+          ],
+          "flowStepNumber": 4,
+          "flowStepIndex": 3,
+          "flowAction": "4. [STUDENT] Path rule /api/auth/* -> Auth Service",
+          "flowLatency": 10
+        }
+      },
+      {
+        "id": "e-alb-complaint",
+        "source": "node-alb",
+        "target": "node-ecs-complaint",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTP",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "ALB registers the new tasks after 2 healthy checks, then deregisters and stops the old ones.",
+          "steps": [
+            8,
+            12,
+            25,
+            40,
+            45,
+            55,
+            65
+          ],
+          "flowStepNumber": 8,
+          "flowStepIndex": 7,
+          "flowAction": "8. [STUDENT] Path rule /api/complaints/* -> Complaint Service",
+          "flowLatency": 10,
+          "stepNumber": 3
+        }
+      },
+      {
+        "id": "e-auth-rds",
+        "source": "node-ecs-auth",
+        "target": "node-rds",
+        "type": "custom",
+        "data": {
+          "protocol": "SQL",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "bcrypt compare against auth.users; returns a JWT (HS256, 1 h) carrying sub and role=STUDENT.",
+          "steps": [
+            5
+          ],
+          "flowStepNumber": 5,
+          "flowStepIndex": 4,
+          "flowAction": "5. [STUDENT] Check password, issue JWT",
+          "flowLatency": 40
+        }
+      },
+      {
+        "id": "e-complaint-rds",
+        "source": "node-ecs-complaint",
+        "target": "node-rds",
+        "type": "custom",
+        "data": {
+          "protocol": "SQL",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "Complaint row + first status-history row; returns 201 with reference CMP-2026-000123.",
+          "steps": [
+            13,
+            27,
+            46,
+            56,
+            66
+          ],
+          "flowStepNumber": 13,
+          "flowStepIndex": 12,
+          "flowAction": "13. [STUDENT] Save complaint (SUBMITTED)",
+          "flowLatency": 40,
+          "stepNumber": 4
+        }
+      },
+      {
+        "id": "e-apigw-notifyapi",
+        "source": "node-apigw",
+        "target": "node-lambda-api",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "synchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "GET /api/notifications and PATCH /api/notifications/{id}/read go from API Gateway straight to this Lambda (Lambda proxy integration). Drawn as a documented route so the simulator keeps POST /api/complaints on the VPC Link -> ALB path.",
+          "steps": [
+            21
+          ],
+          "flowStepNumber": 21,
+          "flowStepIndex": 20,
+          "flowAction": "21. [STUDENT] Lambda proxy -> Notification API Lambda",
+          "flowLatency": 30,
+          "relationship": "manages",
+          "referenceAnnotation": true
+        }
+      },
+      {
+        "id": "e-notifyapi-rds",
+        "source": "node-lambda-api",
+        "target": "node-rds",
+        "type": "custom",
+        "data": {
+          "protocol": "SQL",
+          "interactionType": "synchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "SELECT from notification.notifications WHERE user_id = sub.",
+          "steps": [
+            22
+          ],
+          "flowStepNumber": 22,
+          "flowStepIndex": 21,
+          "flowAction": "22. [STUDENT] Read the student's notifications",
+          "flowLatency": 20
+        }
+      },
+      {
+        "id": "e-complaint-sqs",
+        "source": "node-ecs-complaint",
+        "target": "node-sqs",
+        "type": "custom",
+        "data": {
+          "protocol": "Message",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "SendMessage to SQS. The API has already answered the user; notification work is asynchronous.",
+          "steps": [
+            14,
+            28,
+            47,
+            57,
+            67
+          ],
+          "flowStepNumber": 14,
+          "flowStepIndex": 13,
+          "flowAction": "14. [STUDENT] EVENT COMPLAINT_SUBMITTED",
+          "flowLatency": 15
+        }
+      },
+      {
+        "id": "e-sqs-lambda",
+        "source": "node-sqs",
+        "target": "node-lambda-notify",
+        "type": "custom",
+        "data": {
+          "protocol": "Message",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "Batch of up to 10, no batching window; failed records are reported individually and retried, then sent to the DLQ after 3 tries.",
+          "steps": [
+            15,
+            29,
+            48,
+            58,
+            68
+          ],
+          "flowStepNumber": 15,
+          "flowStepIndex": 14,
+          "flowAction": "15. [STUDENT] SQS triggers Notification consumer Lambda (COMPLAINT_SUBMITTED)",
+          "flowLatency": 200
+        }
+      },
+      {
+        "id": "e-sqs-dlq",
+        "source": "node-sqs",
+        "target": "node-dlq",
+        "type": "custom",
+        "data": {
+          "protocol": "Message",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "After 3 failed receives a message is moved to the DLQ; ccms-dlq-not-empty alarm fires."
+        }
+      },
+      {
+        "id": "e-lambda-alb",
+        "source": "node-lambda-notify",
+        "target": "node-alb",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTP",
+          "interactionType": "synchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "GET /internal/users/{id} through the internal ALB to the Auth Service (never exposed on API Gateway).",
+          "steps": [
+            16,
+            30,
+            49,
+            59,
+            69
+          ],
+          "flowStepNumber": 16,
+          "flowStepIndex": 15,
+          "flowAction": "16. [STUDENT] Look up the student's email",
+          "flowLatency": 30
+        }
+      },
+      {
+        "id": "e-lambda-rds",
+        "source": "node-lambda-notify",
+        "target": "node-rds",
+        "type": "custom",
+        "data": {
+          "protocol": "SQL",
+          "interactionType": "synchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "INSERT ... ON CONFLICT (event_id, user_id) DO NOTHING, so a retried message never creates duplicates.",
+          "steps": [
+            17,
+            31,
+            50,
+            60,
+            70
+          ],
+          "flowStepNumber": 17,
+          "flowStepIndex": 16,
+          "flowAction": "17. [STUDENT] Save in-app notification",
+          "flowLatency": 20
+        }
+      },
+      {
+        "id": "e-lambda-ses",
+        "source": "node-lambda-notify",
+        "target": "node-ses",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "SES SendEmail from the verified sender (skipped if no sender is configured; in-app still works).",
+          "relationship": "manages",
+          "referenceAnnotation": true,
+          "steps": [
+            18,
+            32,
+            51,
+            61,
+            71
+          ],
+          "flowStepNumber": 18,
+          "flowStepIndex": 17,
+          "flowAction": "18. [STUDENT] Send email",
+          "flowLatency": 80
+        }
+      },
+      {
+        "id": "e-ses-student",
+        "source": "node-ses",
+        "target": "node-student",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student"
+          ],
+          "flowExplanation": "Email delivered to the student's inbox.",
+          "relationship": "manages",
+          "referenceAnnotation": true,
+          "steps": [
+            19,
+            34,
+            52,
+            62,
+            72
+          ],
+          "flowStepNumber": 19,
+          "flowStepIndex": 18,
+          "flowAction": "19. [STUDENT] Email to Student: complaint CMP-2026-000123 received",
+          "flowLatency": 1000
+        }
+      },
+      {
+        "id": "e-ses-staff",
+        "source": "node-ses",
+        "target": "node-staff",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "staff"
+          ],
+          "relationship": "manages",
+          "referenceAnnotation": true,
+          "steps": [
+            33
+          ],
+          "flowStepNumber": 33,
+          "flowStepIndex": 32,
+          "flowAction": "33. [ADMIN] Email to Staff: complaint assigned",
+          "flowLatency": 1000
+        }
+      },
+      {
+        "id": "e-ecs-nat",
+        "source": "node-ecs-complaint",
+        "target": "node-nat",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTPS",
+          "interactionType": "synchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "Private tasks and Lambdas reach ECR API, SQS, SES, Secrets Manager and X-Ray through the NAT Gateway (port 443 only)."
+        }
+      },
+      {
+        "id": "e-nat-igw",
+        "source": "node-nat",
+        "target": "node-igw",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTPS",
+          "interactionType": "synchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "NAT Gateway sends outbound traffic to the internet through the Internet Gateway."
+        }
+      },
+      {
+        "id": "e-ecs-s3ep",
+        "source": "node-ecs-auth",
+        "target": "node-s3-endpoint",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTPS",
+          "interactionType": "synchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "ECR image layers (stored in S3) are pulled through the free S3 gateway endpoint, not the NAT."
+        }
+      },
+      {
+        "id": "e-lambda-secrets",
+        "source": "node-lambda-notify",
+        "target": "node-secrets",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTPS",
+          "interactionType": "synchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "Lambdas read the DB and JWT secrets once per cold start."
+        }
+      },
+      {
+        "id": "e-lambda-xray",
+        "source": "node-lambda-notify",
+        "target": "node-xray",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTPS",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "Active tracing: each invocation sends a trace segment."
+        }
+      },
+      {
+        "id": "e-notifyapi-xray",
+        "source": "node-lambda-api",
+        "target": "node-xray",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTPS",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "Active tracing on the notification API Lambda."
+        }
+      },
+      {
+        "id": "e-alb-alarm",
+        "source": "node-alb",
+        "target": "node-alarm",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "relationship": "manages",
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ],
+          "flowExplanation": "If the new tasks keep failing, the ECS deployment circuit breaker rolls back to the previous revision automatically.",
+          "steps": [
+            41
+          ],
+          "flowStepNumber": 41,
+          "flowStepIndex": 40,
+          "flowAction": "41. [DEVELOPER] Watch 5XX and unhealthy targets",
+          "flowLatency": 1000
+        }
+      },
+      {
+        "id": "e-dlq-alarm",
+        "source": "node-dlq",
+        "target": "node-alarm",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ],
+          "flowExplanation": "ApproximateNumberOfMessagesVisible >= 1 -> ccms-dlq-not-empty."
+        }
+      },
+      {
+        "id": "e-alarm-sns",
+        "source": "node-alarm",
+        "target": "node-sns",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ]
+        }
+      },
+      {
+        "id": "e-sns-dev",
+        "source": "node-sns",
+        "target": "node-dev",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "relationship": "manages",
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ],
+          "referenceAnnotation": true
+        }
+      },
+      {
+        "id": "e-budget-dev",
+        "source": "node-budget",
+        "target": "node-dev",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "relationship": "manages",
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ],
+          "flowExplanation": "Budget alert email at 80% of the forecast spend.",
+          "referenceAnnotation": true
+        }
+      },
+      {
+        "id": "e-dev-repo",
+        "source": "node-dev",
+        "target": "node-repo",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "relationship": "manages",
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ],
+          "flowExplanation": "A teammate reviews the pull request; the change only touches services/complaint-service/**.",
+          "steps": [
+            35
+          ],
+          "flowStepNumber": 35,
+          "flowStepIndex": 34,
+          "flowAction": "35. [DEVELOPER] Merge reviewed PR to main",
+          "flowLatency": 5000
+        }
+      },
+      {
+        "id": "e-repo-pipeline",
+        "source": "node-repo",
+        "target": "node-pipeline",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "relationship": "manages",
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ],
+          "flowExplanation": "CodePipeline V2 trigger with file-path filter services/complaint-service/** through the ccms-github connection; auth-service is not rebuilt.",
+          "steps": [
+            36
+          ],
+          "flowStepNumber": 36,
+          "flowStepIndex": 35,
+          "flowAction": "36. [DEVELOPER] Start ccms-complaint-service pipeline",
+          "flowLatency": 5000
+        }
+      },
+      {
+        "id": "e-pipeline-build",
+        "source": "node-pipeline",
+        "target": "node-build",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "relationship": "manages",
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ],
+          "flowExplanation": "npm ci, npm audit --audit-level=high (fails the build on high/critical), npm test --if-present, docker build.",
+          "steps": [
+            37
+          ],
+          "flowStepNumber": 37,
+          "flowStepIndex": 36,
+          "flowAction": "37. [DEVELOPER] Build stage: audit, test, docker build",
+          "flowLatency": 120000
+        }
+      },
+      {
+        "id": "e-build-ecr",
+        "source": "node-build",
+        "target": "node-ecr",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "relationship": "manages",
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ],
+          "flowExplanation": "ECR scans the image on push. CodeBuild writes imagedefinitions.json for the deploy stage.",
+          "steps": [
+            38
+          ],
+          "flowStepNumber": 38,
+          "flowStepIndex": 37,
+          "flowAction": "38. [DEVELOPER] Push image :<git-sha> and :latest",
+          "flowLatency": 30000
+        }
+      },
+      {
+        "id": "e-pipeline-deploy-complaint",
+        "source": "node-pipeline",
+        "target": "node-ecs-complaint",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "relationship": "manages",
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ],
+          "flowExplanation": "Registers a new task-definition revision with the :<git-sha> image and updates the complaint-service.",
+          "steps": [
+            39
+          ],
+          "flowStepNumber": 39,
+          "flowStepIndex": 38,
+          "flowAction": "39. [DEVELOPER] Deploy stage: Amazon ECS action",
+          "flowLatency": 2000
+        }
+      },
+      {
+        "id": "e-pipeline-deploy-auth",
+        "source": "node-pipeline",
+        "target": "node-ecs-auth",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "relationship": "manages",
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ],
+          "flowExplanation": "auth-service uses the same Source -> Build -> Deploy path when services/auth-service/** changes."
+        }
+      },
+      {
+        "id": "e-pipeline-cloudtrail",
+        "source": "node-pipeline",
+        "target": "node-cloudtrail",
+        "type": "custom",
+        "data": {
+          "protocol": "Event",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "relationship": "manages",
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ],
+          "flowExplanation": "CloudTrail event history shows who started the pipeline and the UpdateService call.",
+          "steps": [
+            42
+          ],
+          "flowStepNumber": 42,
+          "flowStepIndex": 41,
+          "flowAction": "42. [DEVELOPER] Audit record",
+          "flowLatency": 100
+        }
+      },
+      {
+        "id": "e-dev-migrate",
+        "source": "node-dev",
+        "target": "node-migrate",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTPS",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ],
+          "flowExplanation": "scripts/aws-up.sh runs the ccms-migrate task once after terraform apply (already-migrated databases are skipped)."
+        }
+      },
+      {
+        "id": "e-migrate-secrets",
+        "source": "node-migrate",
+        "target": "node-secrets",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTPS",
+          "interactionType": "synchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ],
+          "flowExplanation": "psql_url comes from Secrets Manager, never from Git."
+        }
+      },
+      {
+        "id": "e-migrate-rds",
+        "source": "node-migrate",
+        "target": "node-rds",
+        "type": "custom",
+        "data": {
+          "protocol": "SQL",
+          "interactionType": "synchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "idle",
+          "perspective": "developer",
+          "actors": [
+            "developer"
+          ],
+          "flowExplanation": "Creates the auth, complaint and notification schemas and seed data from db/init.sql."
+        }
+      },
+      {
+        "id": "e-apigw-alb",
+        "source": "node-apigw",
+        "target": "node-alb",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTP",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "API Gateway forwards ANY /api/{proxy+} over the VPC Link (ENIs in both private app subnets) to the internal ALB; sg-vpclink may only reach sg-alb on port 80.",
+          "steps": [
+            3,
+            7,
+            11,
+            24,
+            44,
+            54,
+            64
+          ],
+          "flowStepNumber": 3,
+          "flowStepIndex": 2,
+          "flowAction": "3. [STUDENT] VPC Link to internal ALB :80",
+          "flowLatency": 10,
+          "stepNumber": 2
+        }
+      },
+      {
+        "id": "e-complaint-auth",
+        "source": "node-ecs-complaint",
+        "target": "node-ecs-auth",
+        "type": "custom",
+        "data": {
+          "protocol": "HTTP",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "perspective": "user",
+          "actors": [
+            "student",
+            "staff",
+            "admin"
+          ],
+          "flowExplanation": "AUTH_SERVICE_URL points at the internal ALB, whose /internal/users/* rule forwards to the Auth Service; /internal/* is never routed by API Gateway. Confirms the target is an active STAFF user.",
+          "steps": [
+            26
+          ],
+          "flowStepNumber": 26,
+          "flowStepIndex": 25,
+          "flowAction": "26. [ADMIN] GET /internal/users/{staffId} (via internal ALB)",
+          "flowLatency": 20
+        }
+      }
+    ],
+    "scenario": {
+      "id": "ccms-end-to-end",
+      "name": "Complaint lifecycle with a CI/CD rolling release in the middle",
+      "startNodeId": "node-student",
+      "method": "POST",
+      "path": "/api/complaints",
+      "trafficLevel": "normal"
+    },
+    "scenarios": [
+      {
+        "id": "ccms-end-to-end",
+        "name": "Complaint lifecycle with a CI/CD rolling release in the middle",
+        "startNodeId": "node-student",
+        "method": "POST",
+        "path": "/api/complaints",
+        "trafficLevel": "normal"
+      },
+      {
+        "id": "ccms-student-submit",
+        "name": "Student submits a complaint with photo",
+        "startNodeId": "node-student",
+        "method": "POST",
+        "path": "/api/complaints",
+        "trafficLevel": "normal"
+      },
+      {
+        "id": "ccms-staff-resolve",
+        "name": "Staff resolves an assigned complaint",
+        "startNodeId": "node-staff",
+        "method": "PATCH",
+        "path": "/api/complaints/{id}/status",
+        "trafficLevel": "normal"
+      },
+      {
+        "id": "ccms-admin-assign",
+        "name": "Admin assigns a complaint to staff",
+        "startNodeId": "node-admin",
+        "method": "PATCH",
+        "path": "/api/complaints/{id}/assign",
+        "trafficLevel": "normal"
+      },
+      {
+        "id": "ccms-secure-release",
+        "name": "Developer merges to main (CodePipeline -> ECS rolling update)",
+        "startNodeId": "node-dev",
+        "method": "POST",
+        "path": "/git-push",
+        "trafficLevel": "normal"
+      }
+    ],
+    "eventCatalog": {
+      "COMPLAINT_SUBMITTED": "Student created a complaint -> email + in-app to the student",
+      "COMPLAINT_ASSIGNED": "Admin assigned staff -> email to the staff member, in-app to the student",
+      "COMPLAINT_STATUS_CHANGED": "IN_PROGRESS / RESOLVED / CLOSED -> email + in-app to the student"
+    },
+    "phases": [
+      {
+        "phase": "STUDENT",
+        "steps": "1-22",
+        "summary": "Log in, upload photo, submit complaint, COMPLAINT_SUBMITTED email, read in-app notifications"
+      },
+      {
+        "phase": "ADMIN",
+        "steps": "23-34",
+        "summary": "Assign staff (staff checked through the internal ALB), COMPLAINT_ASSIGNED email to staff and student"
+      },
+      {
+        "phase": "DEVELOPER",
+        "steps": "35-42",
+        "summary": "Merge, CodePipeline build/audit, push to ECR, ECS rolling update with circuit breaker, alarm check"
+      },
+      {
+        "phase": "STAFF",
+        "steps": "43-62",
+        "summary": "Accept and resolve on the new version, STATUS_CHANGED emails"
+      },
+      {
+        "phase": "STUDENT",
+        "steps": "63-72",
+        "summary": "Confirm fix, complaint CLOSED"
+      }
+    ],
+    "simulationResult": {
+      "kind": "workflow",
+      "outcome": "success",
+      "scenario": {
+        "id": "ccms-end-to-end",
+        "name": "Complaint lifecycle with a CI/CD rolling release in the middle",
+        "startNodeId": "node-student",
+        "method": "POST",
+        "path": "/api/complaints",
+        "trafficLevel": "normal"
+      },
+      "steps": [
+        {
+          "id": "ccms-step-1",
+          "stepNumber": 1,
+          "timestampMs": 40,
+          "sourceNodeId": "node-student",
+          "targetNodeId": "node-cloudfront",
+          "sourceNodeName": "Student",
+          "targetNodeName": "CloudFront + S3 frontend bucket (OAC)",
+          "protocol": "HTTPS",
+          "action": "1. [STUDENT] Open CCMS web app",
+          "status": "success",
+          "explanation": "CloudFront serves index.html, app.js and config.js from the private frontend bucket (OAC) over HTTPS.",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "STUDENT",
+          "edgeId": "e-student-cf"
+        },
+        {
+          "id": "ccms-step-2",
+          "stepNumber": 2,
+          "timestampMs": 80,
+          "sourceNodeId": "node-student",
+          "targetNodeId": "node-apigw",
+          "sourceNodeName": "Student",
+          "targetNodeName": "API Gateway HTTP API ($default stage)",
+          "protocol": "HTTPS",
+          "action": "2. [STUDENT] POST /api/auth/login",
+          "status": "success",
+          "explanation": "The browser calls the API Gateway URL from config.js; CORS only allows the CloudFront origin.",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "STUDENT",
+          "edgeId": "e-student-apigw"
+        },
+        {
+          "id": "ccms-step-3",
+          "stepNumber": 3,
+          "timestampMs": 90,
+          "sourceNodeId": "node-apigw",
+          "targetNodeId": "node-alb",
+          "sourceNodeName": "API Gateway HTTP API ($default stage)",
+          "targetNodeName": "Internal ALB (path-based routing)",
+          "protocol": "HTTP",
+          "action": "3. [STUDENT] VPC Link to internal ALB :80",
+          "status": "success",
+          "explanation": "API Gateway forwards ANY /api/{proxy+} over the VPC Link (ENIs in both private app subnets) to the internal ALB; sg-vpclink may only reach sg-alb on port 80.",
+          "targetHealth": "healthy",
+          "latencyMs": 10,
+          "phase": "STUDENT",
+          "edgeId": "e-apigw-alb"
+        },
+        {
+          "id": "ccms-step-4",
+          "stepNumber": 4,
+          "timestampMs": 100,
+          "sourceNodeId": "node-alb",
+          "targetNodeId": "node-ecs-auth",
+          "sourceNodeName": "Internal ALB (path-based routing)",
+          "targetNodeName": "Auth Service (ECS Fargate, 2-4 tasks across AZs)",
+          "protocol": "HTTP",
+          "action": "4. [STUDENT] Path rule /api/auth/* -> Auth Service",
+          "status": "success",
+          "explanation": "ALB forwards to a healthy auth task in AZ-a or AZ-b.",
+          "targetHealth": "healthy",
+          "latencyMs": 10,
+          "phase": "STUDENT",
+          "edgeId": "e-alb-auth"
+        },
+        {
+          "id": "ccms-step-5",
+          "stepNumber": 5,
+          "timestampMs": 140,
+          "sourceNodeId": "node-ecs-auth",
+          "targetNodeId": "node-rds",
+          "sourceNodeName": "Auth Service (ECS Fargate, 2-4 tasks across AZs)",
+          "targetNodeName": "RDS PostgreSQL 16 (db.t4g.micro, single-AZ)",
+          "protocol": "SQL",
+          "action": "5. [STUDENT] Check password, issue JWT",
+          "status": "success",
+          "explanation": "bcrypt compare against auth.users; returns a JWT (HS256, 1 h) carrying sub and role=STUDENT.",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "STUDENT",
+          "edgeId": "e-auth-rds"
+        },
+        {
+          "id": "ccms-step-6",
+          "stepNumber": 6,
+          "timestampMs": 180,
+          "sourceNodeId": "node-student",
+          "targetNodeId": "node-apigw",
+          "sourceNodeName": "Student",
+          "targetNodeName": "API Gateway HTTP API ($default stage)",
+          "protocol": "HTTPS",
+          "action": "6. [STUDENT] POST /api/complaints/uploads",
+          "status": "success",
+          "explanation": "Ask for a pre-signed upload URL (JPEG/PNG only).",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "STUDENT",
+          "edgeId": "e-student-apigw"
+        },
+        {
+          "id": "ccms-step-7",
+          "stepNumber": 7,
+          "timestampMs": 190,
+          "sourceNodeId": "node-apigw",
+          "targetNodeId": "node-alb",
+          "sourceNodeName": "API Gateway HTTP API ($default stage)",
+          "targetNodeName": "Internal ALB (path-based routing)",
+          "protocol": "HTTP",
+          "action": "7. [STUDENT] VPC Link to internal ALB :80",
+          "status": "success",
+          "explanation": "API Gateway forwards ANY /api/{proxy+} over the VPC Link (ENIs in both private app subnets) to the internal ALB; sg-vpclink may only reach sg-alb on port 80.",
+          "targetHealth": "healthy",
+          "latencyMs": 10,
+          "phase": "STUDENT",
+          "edgeId": "e-apigw-alb"
+        },
+        {
+          "id": "ccms-step-8",
+          "stepNumber": 8,
+          "timestampMs": 200,
+          "sourceNodeId": "node-alb",
+          "targetNodeId": "node-ecs-complaint",
+          "sourceNodeName": "Internal ALB (path-based routing)",
+          "targetNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "protocol": "HTTP",
+          "action": "8. [STUDENT] Path rule /api/complaints/* -> Complaint Service",
+          "status": "success",
+          "explanation": "",
+          "targetHealth": "healthy",
+          "latencyMs": 10,
+          "phase": "STUDENT",
+          "edgeId": "e-alb-complaint"
+        },
+        {
+          "id": "ccms-step-9",
+          "stepNumber": 9,
+          "timestampMs": 500,
+          "sourceNodeId": "node-student",
+          "targetNodeId": "node-s3-evidence",
+          "sourceNodeName": "Student",
+          "targetNodeName": "S3 evidence bucket (photos)",
+          "protocol": "HTTPS",
+          "action": "9. [STUDENT] PUT photo with pre-signed URL",
+          "status": "success",
+          "explanation": "URL valid 300 s for uploads/<key>. The file goes straight to S3 and never passes through the containers.",
+          "targetHealth": "healthy",
+          "latencyMs": 300,
+          "phase": "STUDENT",
+          "edgeId": "e-student-s3"
+        },
+        {
+          "id": "ccms-step-10",
+          "stepNumber": 10,
+          "timestampMs": 540,
+          "sourceNodeId": "node-student",
+          "targetNodeId": "node-apigw",
+          "sourceNodeName": "Student",
+          "targetNodeName": "API Gateway HTTP API ($default stage)",
+          "protocol": "HTTPS",
+          "action": "10. [STUDENT] POST /api/complaints",
+          "status": "success",
+          "explanation": "Create the complaint with category, location, title, description and the photo key.",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "STUDENT",
+          "edgeId": "e-student-apigw"
+        },
+        {
+          "id": "ccms-step-11",
+          "stepNumber": 11,
+          "timestampMs": 550,
+          "sourceNodeId": "node-apigw",
+          "targetNodeId": "node-alb",
+          "sourceNodeName": "API Gateway HTTP API ($default stage)",
+          "targetNodeName": "Internal ALB (path-based routing)",
+          "protocol": "HTTP",
+          "action": "11. [STUDENT] VPC Link to internal ALB :80",
+          "status": "success",
+          "explanation": "API Gateway forwards ANY /api/{proxy+} over the VPC Link (ENIs in both private app subnets) to the internal ALB; sg-vpclink may only reach sg-alb on port 80.",
+          "targetHealth": "healthy",
+          "latencyMs": 10,
+          "phase": "STUDENT",
+          "edgeId": "e-apigw-alb"
+        },
+        {
+          "id": "ccms-step-12",
+          "stepNumber": 12,
+          "timestampMs": 560,
+          "sourceNodeId": "node-alb",
+          "targetNodeId": "node-ecs-complaint",
+          "sourceNodeName": "Internal ALB (path-based routing)",
+          "targetNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "protocol": "HTTP",
+          "action": "12. [STUDENT] Route to Complaint Service",
+          "status": "success",
+          "explanation": "",
+          "targetHealth": "healthy",
+          "latencyMs": 10,
+          "phase": "STUDENT",
+          "edgeId": "e-alb-complaint"
+        },
+        {
+          "id": "ccms-step-13",
+          "stepNumber": 13,
+          "timestampMs": 600,
+          "sourceNodeId": "node-ecs-complaint",
+          "targetNodeId": "node-rds",
+          "sourceNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "targetNodeName": "RDS PostgreSQL 16 (db.t4g.micro, single-AZ)",
+          "protocol": "SQL",
+          "action": "13. [STUDENT] Save complaint (SUBMITTED)",
+          "status": "success",
+          "explanation": "Complaint row + first status-history row; returns 201 with reference CMP-2026-000123.",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "STUDENT",
+          "edgeId": "e-complaint-rds"
+        },
+        {
+          "id": "ccms-step-14",
+          "stepNumber": 14,
+          "timestampMs": 615,
+          "sourceNodeId": "node-ecs-complaint",
+          "targetNodeId": "node-sqs",
+          "sourceNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "targetNodeName": "SQS ccms-complaint-events (SUBMITTED / ASSIGNED / STATUS_CHANGED)",
+          "protocol": "Message",
+          "action": "14. [STUDENT] EVENT COMPLAINT_SUBMITTED",
+          "status": "success",
+          "explanation": "SendMessage to SQS. The API has already answered the user; notification work is asynchronous.",
+          "targetHealth": "healthy",
+          "latencyMs": 15,
+          "phase": "STUDENT",
+          "edgeId": "e-complaint-sqs"
+        },
+        {
+          "id": "ccms-step-15",
+          "stepNumber": 15,
+          "timestampMs": 815,
+          "sourceNodeId": "node-sqs",
+          "targetNodeId": "node-lambda-notify",
+          "sourceNodeName": "SQS ccms-complaint-events (SUBMITTED / ASSIGNED / STATUS_CHANGED)",
+          "targetNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "protocol": "Message",
+          "action": "15. [STUDENT] SQS triggers Notification consumer Lambda (COMPLAINT_SUBMITTED)",
+          "status": "success",
+          "explanation": "Batch of up to 10, no batching window; failed records are reported individually and retried, then sent to the DLQ after 3 tries.",
+          "targetHealth": "healthy",
+          "latencyMs": 200,
+          "phase": "STUDENT",
+          "edgeId": "e-sqs-lambda"
+        },
+        {
+          "id": "ccms-step-16",
+          "stepNumber": 16,
+          "timestampMs": 845,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-alb",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "Internal ALB (path-based routing)",
+          "protocol": "HTTP",
+          "action": "16. [STUDENT] Look up the student's email",
+          "status": "success",
+          "explanation": "GET /internal/users/{id} through the internal ALB to the Auth Service (never exposed on API Gateway).",
+          "targetHealth": "healthy",
+          "latencyMs": 30,
+          "phase": "STUDENT",
+          "edgeId": "e-lambda-alb"
+        },
+        {
+          "id": "ccms-step-17",
+          "stepNumber": 17,
+          "timestampMs": 865,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-rds",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "RDS PostgreSQL 16 (db.t4g.micro, single-AZ)",
+          "protocol": "SQL",
+          "action": "17. [STUDENT] Save in-app notification",
+          "status": "success",
+          "explanation": "INSERT ... ON CONFLICT (event_id, user_id) DO NOTHING, so a retried message never creates duplicates.",
+          "targetHealth": "healthy",
+          "latencyMs": 20,
+          "phase": "STUDENT",
+          "edgeId": "e-lambda-rds"
+        },
+        {
+          "id": "ccms-step-18",
+          "stepNumber": 18,
+          "timestampMs": 945,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-ses",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "Amazon SES (email)",
+          "protocol": "Event",
+          "action": "18. [STUDENT] Send email",
+          "status": "success",
+          "explanation": "SES SendEmail from the verified sender (skipped if no sender is configured; in-app still works).",
+          "targetHealth": "healthy",
+          "latencyMs": 80,
+          "phase": "STUDENT",
+          "edgeId": "e-lambda-ses"
+        },
+        {
+          "id": "ccms-step-19",
+          "stepNumber": 19,
+          "timestampMs": 1945,
+          "sourceNodeId": "node-ses",
+          "targetNodeId": "node-student",
+          "sourceNodeName": "Amazon SES (email)",
+          "targetNodeName": "Student",
+          "protocol": "Event",
+          "action": "19. [STUDENT] Email to Student: complaint CMP-2026-000123 received",
+          "status": "success",
+          "explanation": "Email delivered to the student's inbox.",
+          "targetHealth": "healthy",
+          "latencyMs": 1000,
+          "phase": "STUDENT",
+          "edgeId": "e-ses-student"
+        },
+        {
+          "id": "ccms-step-20",
+          "stepNumber": 20,
+          "timestampMs": 1985,
+          "sourceNodeId": "node-student",
+          "targetNodeId": "node-apigw",
+          "sourceNodeName": "Student",
+          "targetNodeName": "API Gateway HTTP API ($default stage)",
+          "protocol": "HTTPS",
+          "action": "20. [STUDENT] GET /api/notifications",
+          "status": "success",
+          "explanation": "The bell icon polls for in-app notifications.",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "STUDENT",
+          "edgeId": "e-student-apigw"
+        },
+        {
+          "id": "ccms-step-21",
+          "stepNumber": 21,
+          "timestampMs": 2015,
+          "sourceNodeId": "node-apigw",
+          "targetNodeId": "node-lambda-api",
+          "sourceNodeName": "API Gateway HTTP API ($default stage)",
+          "targetNodeName": "Notification API Lambda (ccms-notification-api)",
+          "protocol": "Event",
+          "action": "21. [STUDENT] Lambda proxy -> Notification API Lambda",
+          "status": "success",
+          "explanation": "This route bypasses the ALB; the Lambda verifies the JWT itself.",
+          "targetHealth": "healthy",
+          "latencyMs": 30,
+          "phase": "STUDENT",
+          "edgeId": "e-apigw-notifyapi"
+        },
+        {
+          "id": "ccms-step-22",
+          "stepNumber": 22,
+          "timestampMs": 2035,
+          "sourceNodeId": "node-lambda-api",
+          "targetNodeId": "node-rds",
+          "sourceNodeName": "Notification API Lambda (ccms-notification-api)",
+          "targetNodeName": "RDS PostgreSQL 16 (db.t4g.micro, single-AZ)",
+          "protocol": "SQL",
+          "action": "22. [STUDENT] Read the student's notifications",
+          "status": "success",
+          "explanation": "SELECT from notification.notifications WHERE user_id = sub.",
+          "targetHealth": "healthy",
+          "latencyMs": 20,
+          "phase": "STUDENT",
+          "edgeId": "e-notifyapi-rds"
+        },
+        {
+          "id": "ccms-step-23",
+          "stepNumber": 23,
+          "timestampMs": 2075,
+          "sourceNodeId": "node-admin",
+          "targetNodeId": "node-apigw",
+          "sourceNodeName": "Administrator",
+          "targetNodeName": "API Gateway HTTP API ($default stage)",
+          "protocol": "HTTPS",
+          "action": "23. [ADMIN] PATCH /api/complaints/{id}/assign",
+          "status": "success",
+          "explanation": "Admin opens the dashboard (same app, admin view from the JWT role) and picks a staff member.",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "ADMIN",
+          "edgeId": "e-admin-apigw"
+        },
+        {
+          "id": "ccms-step-24",
+          "stepNumber": 24,
+          "timestampMs": 2085,
+          "sourceNodeId": "node-apigw",
+          "targetNodeId": "node-alb",
+          "sourceNodeName": "API Gateway HTTP API ($default stage)",
+          "targetNodeName": "Internal ALB (path-based routing)",
+          "protocol": "HTTP",
+          "action": "24. [ADMIN] VPC Link to internal ALB :80",
+          "status": "success",
+          "explanation": "API Gateway forwards ANY /api/{proxy+} over the VPC Link (ENIs in both private app subnets) to the internal ALB; sg-vpclink may only reach sg-alb on port 80.",
+          "targetHealth": "healthy",
+          "latencyMs": 10,
+          "phase": "ADMIN",
+          "edgeId": "e-apigw-alb"
+        },
+        {
+          "id": "ccms-step-25",
+          "stepNumber": 25,
+          "timestampMs": 2095,
+          "sourceNodeId": "node-alb",
+          "targetNodeId": "node-ecs-complaint",
+          "sourceNodeName": "Internal ALB (path-based routing)",
+          "targetNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "protocol": "HTTP",
+          "action": "25. [ADMIN] Route to Complaint Service",
+          "status": "success",
+          "explanation": "",
+          "targetHealth": "healthy",
+          "latencyMs": 10,
+          "phase": "ADMIN",
+          "edgeId": "e-alb-complaint"
+        },
+        {
+          "id": "ccms-step-26",
+          "stepNumber": 26,
+          "timestampMs": 2115,
+          "sourceNodeId": "node-ecs-complaint",
+          "targetNodeId": "node-ecs-auth",
+          "sourceNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "targetNodeName": "Auth Service (ECS Fargate, 2-4 tasks across AZs)",
+          "protocol": "HTTP",
+          "action": "26. [ADMIN] GET /internal/users/{staffId} (via internal ALB)",
+          "status": "success",
+          "explanation": "AUTH_SERVICE_URL points at the internal ALB, whose /internal/users/* rule forwards to the Auth Service; /internal/* is never routed by API Gateway. Confirms the target is an active STAFF user.",
+          "targetHealth": "healthy",
+          "latencyMs": 20,
+          "phase": "ADMIN",
+          "edgeId": "e-complaint-auth"
+        },
+        {
+          "id": "ccms-step-27",
+          "stepNumber": 27,
+          "timestampMs": 2155,
+          "sourceNodeId": "node-ecs-complaint",
+          "targetNodeId": "node-rds",
+          "sourceNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "targetNodeName": "RDS PostgreSQL 16 (db.t4g.micro, single-AZ)",
+          "protocol": "SQL",
+          "action": "27. [ADMIN] Save status ASSIGNED",
+          "status": "success",
+          "explanation": "Updates the complaint and writes a status-history row.",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "ADMIN",
+          "edgeId": "e-complaint-rds"
+        },
+        {
+          "id": "ccms-step-28",
+          "stepNumber": 28,
+          "timestampMs": 2170,
+          "sourceNodeId": "node-ecs-complaint",
+          "targetNodeId": "node-sqs",
+          "sourceNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "targetNodeName": "SQS ccms-complaint-events (SUBMITTED / ASSIGNED / STATUS_CHANGED)",
+          "protocol": "Message",
+          "action": "28. [ADMIN] EVENT COMPLAINT_ASSIGNED",
+          "status": "success",
+          "explanation": "SendMessage to SQS. The API has already answered the user; notification work is asynchronous.",
+          "targetHealth": "healthy",
+          "latencyMs": 15,
+          "phase": "ADMIN",
+          "edgeId": "e-complaint-sqs"
+        },
+        {
+          "id": "ccms-step-29",
+          "stepNumber": 29,
+          "timestampMs": 2370,
+          "sourceNodeId": "node-sqs",
+          "targetNodeId": "node-lambda-notify",
+          "sourceNodeName": "SQS ccms-complaint-events (SUBMITTED / ASSIGNED / STATUS_CHANGED)",
+          "targetNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "protocol": "Message",
+          "action": "29. [ADMIN] SQS triggers Notification consumer Lambda (COMPLAINT_ASSIGNED)",
+          "status": "success",
+          "explanation": "Batch of up to 10, no batching window; failed records are reported individually and retried, then sent to the DLQ after 3 tries.",
+          "targetHealth": "healthy",
+          "latencyMs": 200,
+          "phase": "ADMIN",
+          "edgeId": "e-sqs-lambda"
+        },
+        {
+          "id": "ccms-step-30",
+          "stepNumber": 30,
+          "timestampMs": 2400,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-alb",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "Internal ALB (path-based routing)",
+          "protocol": "HTTP",
+          "action": "30. [ADMIN] Look up the staff member's and student's email",
+          "status": "success",
+          "explanation": "GET /internal/users/{id} through the internal ALB to the Auth Service (never exposed on API Gateway).",
+          "targetHealth": "healthy",
+          "latencyMs": 30,
+          "phase": "ADMIN",
+          "edgeId": "e-lambda-alb"
+        },
+        {
+          "id": "ccms-step-31",
+          "stepNumber": 31,
+          "timestampMs": 2420,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-rds",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "RDS PostgreSQL 16 (db.t4g.micro, single-AZ)",
+          "protocol": "SQL",
+          "action": "31. [ADMIN] Save in-app notification",
+          "status": "success",
+          "explanation": "INSERT ... ON CONFLICT (event_id, user_id) DO NOTHING, so a retried message never creates duplicates.",
+          "targetHealth": "healthy",
+          "latencyMs": 20,
+          "phase": "ADMIN",
+          "edgeId": "e-lambda-rds"
+        },
+        {
+          "id": "ccms-step-32",
+          "stepNumber": 32,
+          "timestampMs": 2500,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-ses",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "Amazon SES (email)",
+          "protocol": "Event",
+          "action": "32. [ADMIN] Send email",
+          "status": "success",
+          "explanation": "SES SendEmail from the verified sender (skipped if no sender is configured; in-app still works).",
+          "targetHealth": "healthy",
+          "latencyMs": 80,
+          "phase": "ADMIN",
+          "edgeId": "e-lambda-ses"
+        },
+        {
+          "id": "ccms-step-33",
+          "stepNumber": 33,
+          "timestampMs": 3500,
+          "sourceNodeId": "node-ses",
+          "targetNodeId": "node-staff",
+          "sourceNodeName": "Amazon SES (email)",
+          "targetNodeName": "Staff",
+          "protocol": "Event",
+          "action": "33. [ADMIN] Email to Staff: complaint assigned",
+          "status": "success",
+          "explanation": "",
+          "targetHealth": "healthy",
+          "latencyMs": 1000,
+          "phase": "ADMIN",
+          "edgeId": "e-ses-staff"
+        },
+        {
+          "id": "ccms-step-34",
+          "stepNumber": 34,
+          "timestampMs": 4500,
+          "sourceNodeId": "node-ses",
+          "targetNodeId": "node-student",
+          "sourceNodeName": "Amazon SES (email)",
+          "targetNodeName": "Student",
+          "protocol": "Event",
+          "action": "34. [ADMIN] Email to Student: complaint assigned",
+          "status": "success",
+          "explanation": "Both recipients get a row because the unique key is (event_id, user_id).",
+          "targetHealth": "healthy",
+          "latencyMs": 1000,
+          "phase": "ADMIN",
+          "edgeId": "e-ses-student"
+        },
+        {
+          "id": "ccms-step-35",
+          "stepNumber": 35,
+          "timestampMs": 9500,
+          "sourceNodeId": "node-dev",
+          "targetNodeId": "node-repo",
+          "sourceNodeName": "Developer (team member)",
+          "targetNodeName": "GitHub repo CCMS-G2/DSO303_FINALS",
+          "protocol": "Event",
+          "action": "35. [DEVELOPER] Merge reviewed PR to main",
+          "status": "success",
+          "explanation": "A teammate reviews the pull request; the change only touches services/complaint-service/**.",
+          "targetHealth": "healthy",
+          "latencyMs": 5000,
+          "phase": "DEVELOPER",
+          "edgeId": "e-dev-repo"
+        },
+        {
+          "id": "ccms-step-36",
+          "stepNumber": 36,
+          "timestampMs": 14500,
+          "sourceNodeId": "node-repo",
+          "targetNodeId": "node-pipeline",
+          "sourceNodeName": "GitHub repo CCMS-G2/DSO303_FINALS",
+          "targetNodeName": "CodePipeline V2 (one per service)",
+          "protocol": "Event",
+          "action": "36. [DEVELOPER] Start ccms-complaint-service pipeline",
+          "status": "success",
+          "explanation": "CodePipeline V2 trigger with file-path filter services/complaint-service/** through the ccms-github connection; auth-service is not rebuilt.",
+          "targetHealth": "healthy",
+          "latencyMs": 5000,
+          "phase": "DEVELOPER",
+          "edgeId": "e-repo-pipeline"
+        },
+        {
+          "id": "ccms-step-37",
+          "stepNumber": 37,
+          "timestampMs": 134500,
+          "sourceNodeId": "node-pipeline",
+          "targetNodeId": "node-build",
+          "sourceNodeName": "CodePipeline V2 (one per service)",
+          "targetNodeName": "CodeBuild: audit + build + push",
+          "protocol": "Event",
+          "action": "37. [DEVELOPER] Build stage: audit, test, docker build",
+          "status": "success",
+          "explanation": "npm ci, npm audit --audit-level=high (fails the build on high/critical), npm test --if-present, docker build.",
+          "targetHealth": "healthy",
+          "latencyMs": 120000,
+          "phase": "DEVELOPER",
+          "edgeId": "e-pipeline-build"
+        },
+        {
+          "id": "ccms-step-38",
+          "stepNumber": 38,
+          "timestampMs": 164500,
+          "sourceNodeId": "node-build",
+          "targetNodeId": "node-ecr",
+          "sourceNodeName": "CodeBuild: audit + build + push",
+          "targetNodeName": "Amazon ECR (ccms/auth-service, ccms/complaint-service)",
+          "protocol": "Event",
+          "action": "38. [DEVELOPER] Push image :<git-sha> and :latest",
+          "status": "success",
+          "explanation": "ECR scans the image on push. CodeBuild writes imagedefinitions.json for the deploy stage.",
+          "targetHealth": "healthy",
+          "latencyMs": 30000,
+          "phase": "DEVELOPER",
+          "edgeId": "e-build-ecr"
+        },
+        {
+          "id": "ccms-step-39",
+          "stepNumber": 39,
+          "timestampMs": 166500,
+          "sourceNodeId": "node-pipeline",
+          "targetNodeId": "node-ecs-complaint",
+          "sourceNodeName": "CodePipeline V2 (one per service)",
+          "targetNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "protocol": "Event",
+          "action": "39. [DEVELOPER] Deploy stage: Amazon ECS action",
+          "status": "success",
+          "explanation": "Registers a new task-definition revision with the :<git-sha> image and updates the complaint-service. New tasks pull the :<git-sha> image from ECR (layers via the S3 gateway endpoint); rolling update keeps 100% capacity.",
+          "targetHealth": "healthy",
+          "latencyMs": 2000,
+          "phase": "DEVELOPER",
+          "edgeId": "e-pipeline-deploy-complaint"
+        },
+        {
+          "id": "ccms-step-40",
+          "stepNumber": 40,
+          "timestampMs": 226500,
+          "sourceNodeId": "node-alb",
+          "targetNodeId": "node-ecs-complaint",
+          "sourceNodeName": "Internal ALB (path-based routing)",
+          "targetNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "protocol": "HTTP",
+          "action": "40. [DEVELOPER] New tasks pass /health, old tasks drain",
+          "status": "success",
+          "explanation": "ALB registers the new tasks after 2 healthy checks, then deregisters and stops the old ones.",
+          "targetHealth": "healthy",
+          "latencyMs": 60000,
+          "phase": "DEVELOPER",
+          "edgeId": "e-alb-complaint"
+        },
+        {
+          "id": "ccms-step-41",
+          "stepNumber": 41,
+          "timestampMs": 227500,
+          "sourceNodeId": "node-alb",
+          "targetNodeId": "node-alarm",
+          "sourceNodeName": "Internal ALB (path-based routing)",
+          "targetNodeName": "CloudWatch (logs, metrics, 10 alarms, CCMS-Overview dashboard)",
+          "protocol": "Event",
+          "action": "41. [DEVELOPER] Watch 5XX and unhealthy targets",
+          "status": "success",
+          "explanation": "If the new tasks keep failing, the ECS deployment circuit breaker rolls back to the previous revision automatically.",
+          "targetHealth": "healthy",
+          "latencyMs": 1000,
+          "phase": "DEVELOPER",
+          "edgeId": "e-alb-alarm"
+        },
+        {
+          "id": "ccms-step-42",
+          "stepNumber": 42,
+          "timestampMs": 227600,
+          "sourceNodeId": "node-pipeline",
+          "targetNodeId": "node-cloudtrail",
+          "sourceNodeName": "CodePipeline V2 (one per service)",
+          "targetNodeName": "CloudTrail event history (audit)",
+          "protocol": "Event",
+          "action": "42. [DEVELOPER] Audit record",
+          "status": "success",
+          "explanation": "CloudTrail event history shows who started the pipeline and the UpdateService call.",
+          "targetHealth": "healthy",
+          "latencyMs": 100,
+          "phase": "DEVELOPER",
+          "edgeId": "e-pipeline-cloudtrail"
+        },
+        {
+          "id": "ccms-step-43",
+          "stepNumber": 43,
+          "timestampMs": 227640,
+          "sourceNodeId": "node-staff",
+          "targetNodeId": "node-apigw",
+          "sourceNodeName": "Staff",
+          "targetNodeName": "API Gateway HTTP API ($default stage)",
+          "protocol": "HTTPS",
+          "action": "43. [STAFF] PATCH /status -> IN_PROGRESS",
+          "status": "success",
+          "explanation": "Staff accepts the complaint. This request is already served by the new version; users did not notice the release.",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "STAFF",
+          "edgeId": "e-staff-apigw"
+        },
+        {
+          "id": "ccms-step-44",
+          "stepNumber": 44,
+          "timestampMs": 227650,
+          "sourceNodeId": "node-apigw",
+          "targetNodeId": "node-alb",
+          "sourceNodeName": "API Gateway HTTP API ($default stage)",
+          "targetNodeName": "Internal ALB (path-based routing)",
+          "protocol": "HTTP",
+          "action": "44. [STAFF] VPC Link to internal ALB :80",
+          "status": "success",
+          "explanation": "API Gateway forwards ANY /api/{proxy+} over the VPC Link (ENIs in both private app subnets) to the internal ALB; sg-vpclink may only reach sg-alb on port 80.",
+          "targetHealth": "healthy",
+          "latencyMs": 10,
+          "phase": "STAFF",
+          "edgeId": "e-apigw-alb"
+        },
+        {
+          "id": "ccms-step-45",
+          "stepNumber": 45,
+          "timestampMs": 227660,
+          "sourceNodeId": "node-alb",
+          "targetNodeId": "node-ecs-complaint",
+          "sourceNodeName": "Internal ALB (path-based routing)",
+          "targetNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "protocol": "HTTP",
+          "action": "45. [STAFF] Route to Complaint Service",
+          "status": "success",
+          "explanation": "",
+          "targetHealth": "healthy",
+          "latencyMs": 10,
+          "phase": "STAFF",
+          "edgeId": "e-alb-complaint"
+        },
+        {
+          "id": "ccms-step-46",
+          "stepNumber": 46,
+          "timestampMs": 227700,
+          "sourceNodeId": "node-ecs-complaint",
+          "targetNodeId": "node-rds",
+          "sourceNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "targetNodeName": "RDS PostgreSQL 16 (db.t4g.micro, single-AZ)",
+          "protocol": "SQL",
+          "action": "46. [STAFF] Save status IN_PROGRESS",
+          "status": "success",
+          "explanation": "",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "STAFF",
+          "edgeId": "e-complaint-rds"
+        },
+        {
+          "id": "ccms-step-47",
+          "stepNumber": 47,
+          "timestampMs": 227715,
+          "sourceNodeId": "node-ecs-complaint",
+          "targetNodeId": "node-sqs",
+          "sourceNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "targetNodeName": "SQS ccms-complaint-events (SUBMITTED / ASSIGNED / STATUS_CHANGED)",
+          "protocol": "Message",
+          "action": "47. [STAFF] EVENT COMPLAINT_STATUS_CHANGED",
+          "status": "success",
+          "explanation": "SendMessage to SQS. The API has already answered the user; notification work is asynchronous.",
+          "targetHealth": "healthy",
+          "latencyMs": 15,
+          "phase": "STAFF",
+          "edgeId": "e-complaint-sqs"
+        },
+        {
+          "id": "ccms-step-48",
+          "stepNumber": 48,
+          "timestampMs": 227915,
+          "sourceNodeId": "node-sqs",
+          "targetNodeId": "node-lambda-notify",
+          "sourceNodeName": "SQS ccms-complaint-events (SUBMITTED / ASSIGNED / STATUS_CHANGED)",
+          "targetNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "protocol": "Message",
+          "action": "48. [STAFF] SQS triggers Notification consumer Lambda (COMPLAINT_STATUS_CHANGED)",
+          "status": "success",
+          "explanation": "Batch of up to 10, no batching window; failed records are reported individually and retried, then sent to the DLQ after 3 tries.",
+          "targetHealth": "healthy",
+          "latencyMs": 200,
+          "phase": "STAFF",
+          "edgeId": "e-sqs-lambda"
+        },
+        {
+          "id": "ccms-step-49",
+          "stepNumber": 49,
+          "timestampMs": 227945,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-alb",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "Internal ALB (path-based routing)",
+          "protocol": "HTTP",
+          "action": "49. [STAFF] Look up the student's email",
+          "status": "success",
+          "explanation": "GET /internal/users/{id} through the internal ALB to the Auth Service (never exposed on API Gateway).",
+          "targetHealth": "healthy",
+          "latencyMs": 30,
+          "phase": "STAFF",
+          "edgeId": "e-lambda-alb"
+        },
+        {
+          "id": "ccms-step-50",
+          "stepNumber": 50,
+          "timestampMs": 227965,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-rds",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "RDS PostgreSQL 16 (db.t4g.micro, single-AZ)",
+          "protocol": "SQL",
+          "action": "50. [STAFF] Save in-app notification",
+          "status": "success",
+          "explanation": "INSERT ... ON CONFLICT (event_id, user_id) DO NOTHING, so a retried message never creates duplicates.",
+          "targetHealth": "healthy",
+          "latencyMs": 20,
+          "phase": "STAFF",
+          "edgeId": "e-lambda-rds"
+        },
+        {
+          "id": "ccms-step-51",
+          "stepNumber": 51,
+          "timestampMs": 228045,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-ses",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "Amazon SES (email)",
+          "protocol": "Event",
+          "action": "51. [STAFF] Send email",
+          "status": "success",
+          "explanation": "SES SendEmail from the verified sender (skipped if no sender is configured; in-app still works).",
+          "targetHealth": "healthy",
+          "latencyMs": 80,
+          "phase": "STAFF",
+          "edgeId": "e-lambda-ses"
+        },
+        {
+          "id": "ccms-step-52",
+          "stepNumber": 52,
+          "timestampMs": 229045,
+          "sourceNodeId": "node-ses",
+          "targetNodeId": "node-student",
+          "sourceNodeName": "Amazon SES (email)",
+          "targetNodeName": "Student",
+          "protocol": "Event",
+          "action": "52. [STAFF] Email to Student: work in progress",
+          "status": "success",
+          "explanation": "",
+          "targetHealth": "healthy",
+          "latencyMs": 1000,
+          "phase": "STAFF",
+          "edgeId": "e-ses-student"
+        },
+        {
+          "id": "ccms-step-53",
+          "stepNumber": 53,
+          "timestampMs": 229085,
+          "sourceNodeId": "node-staff",
+          "targetNodeId": "node-apigw",
+          "sourceNodeName": "Staff",
+          "targetNodeName": "API Gateway HTTP API ($default stage)",
+          "protocol": "HTTPS",
+          "action": "53. [STAFF] PATCH /status -> RESOLVED (with note)",
+          "status": "success",
+          "explanation": "A resolution note is required.",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "STAFF",
+          "edgeId": "e-staff-apigw"
+        },
+        {
+          "id": "ccms-step-54",
+          "stepNumber": 54,
+          "timestampMs": 229095,
+          "sourceNodeId": "node-apigw",
+          "targetNodeId": "node-alb",
+          "sourceNodeName": "API Gateway HTTP API ($default stage)",
+          "targetNodeName": "Internal ALB (path-based routing)",
+          "protocol": "HTTP",
+          "action": "54. [STAFF] VPC Link to internal ALB :80",
+          "status": "success",
+          "explanation": "API Gateway forwards ANY /api/{proxy+} over the VPC Link (ENIs in both private app subnets) to the internal ALB; sg-vpclink may only reach sg-alb on port 80.",
+          "targetHealth": "healthy",
+          "latencyMs": 10,
+          "phase": "STAFF",
+          "edgeId": "e-apigw-alb"
+        },
+        {
+          "id": "ccms-step-55",
+          "stepNumber": 55,
+          "timestampMs": 229105,
+          "sourceNodeId": "node-alb",
+          "targetNodeId": "node-ecs-complaint",
+          "sourceNodeName": "Internal ALB (path-based routing)",
+          "targetNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "protocol": "HTTP",
+          "action": "55. [STAFF] Route to Complaint Service",
+          "status": "success",
+          "explanation": "",
+          "targetHealth": "healthy",
+          "latencyMs": 10,
+          "phase": "STAFF",
+          "edgeId": "e-alb-complaint"
+        },
+        {
+          "id": "ccms-step-56",
+          "stepNumber": 56,
+          "timestampMs": 229145,
+          "sourceNodeId": "node-ecs-complaint",
+          "targetNodeId": "node-rds",
+          "sourceNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "targetNodeName": "RDS PostgreSQL 16 (db.t4g.micro, single-AZ)",
+          "protocol": "SQL",
+          "action": "56. [STAFF] Save status RESOLVED",
+          "status": "success",
+          "explanation": "",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "STAFF",
+          "edgeId": "e-complaint-rds"
+        },
+        {
+          "id": "ccms-step-57",
+          "stepNumber": 57,
+          "timestampMs": 229160,
+          "sourceNodeId": "node-ecs-complaint",
+          "targetNodeId": "node-sqs",
+          "sourceNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "targetNodeName": "SQS ccms-complaint-events (SUBMITTED / ASSIGNED / STATUS_CHANGED)",
+          "protocol": "Message",
+          "action": "57. [STAFF] EVENT COMPLAINT_STATUS_CHANGED",
+          "status": "success",
+          "explanation": "SendMessage to SQS. The API has already answered the user; notification work is asynchronous.",
+          "targetHealth": "healthy",
+          "latencyMs": 15,
+          "phase": "STAFF",
+          "edgeId": "e-complaint-sqs"
+        },
+        {
+          "id": "ccms-step-58",
+          "stepNumber": 58,
+          "timestampMs": 229360,
+          "sourceNodeId": "node-sqs",
+          "targetNodeId": "node-lambda-notify",
+          "sourceNodeName": "SQS ccms-complaint-events (SUBMITTED / ASSIGNED / STATUS_CHANGED)",
+          "targetNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "protocol": "Message",
+          "action": "58. [STAFF] SQS triggers Notification consumer Lambda (COMPLAINT_STATUS_CHANGED)",
+          "status": "success",
+          "explanation": "Batch of up to 10, no batching window; failed records are reported individually and retried, then sent to the DLQ after 3 tries.",
+          "targetHealth": "healthy",
+          "latencyMs": 200,
+          "phase": "STAFF",
+          "edgeId": "e-sqs-lambda"
+        },
+        {
+          "id": "ccms-step-59",
+          "stepNumber": 59,
+          "timestampMs": 229390,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-alb",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "Internal ALB (path-based routing)",
+          "protocol": "HTTP",
+          "action": "59. [STAFF] Look up the student's email",
+          "status": "success",
+          "explanation": "GET /internal/users/{id} through the internal ALB to the Auth Service (never exposed on API Gateway).",
+          "targetHealth": "healthy",
+          "latencyMs": 30,
+          "phase": "STAFF",
+          "edgeId": "e-lambda-alb"
+        },
+        {
+          "id": "ccms-step-60",
+          "stepNumber": 60,
+          "timestampMs": 229410,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-rds",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "RDS PostgreSQL 16 (db.t4g.micro, single-AZ)",
+          "protocol": "SQL",
+          "action": "60. [STAFF] Save in-app notification",
+          "status": "success",
+          "explanation": "INSERT ... ON CONFLICT (event_id, user_id) DO NOTHING, so a retried message never creates duplicates.",
+          "targetHealth": "healthy",
+          "latencyMs": 20,
+          "phase": "STAFF",
+          "edgeId": "e-lambda-rds"
+        },
+        {
+          "id": "ccms-step-61",
+          "stepNumber": 61,
+          "timestampMs": 229490,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-ses",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "Amazon SES (email)",
+          "protocol": "Event",
+          "action": "61. [STAFF] Send email",
+          "status": "success",
+          "explanation": "SES SendEmail from the verified sender (skipped if no sender is configured; in-app still works).",
+          "targetHealth": "healthy",
+          "latencyMs": 80,
+          "phase": "STAFF",
+          "edgeId": "e-lambda-ses"
+        },
+        {
+          "id": "ccms-step-62",
+          "stepNumber": 62,
+          "timestampMs": 230490,
+          "sourceNodeId": "node-ses",
+          "targetNodeId": "node-student",
+          "sourceNodeName": "Amazon SES (email)",
+          "targetNodeName": "Student",
+          "protocol": "Event",
+          "action": "62. [STAFF] Email to Student: complaint resolved, please confirm",
+          "status": "success",
+          "explanation": "",
+          "targetHealth": "healthy",
+          "latencyMs": 1000,
+          "phase": "STAFF",
+          "edgeId": "e-ses-student"
+        },
+        {
+          "id": "ccms-step-63",
+          "stepNumber": 63,
+          "timestampMs": 230530,
+          "sourceNodeId": "node-student",
+          "targetNodeId": "node-apigw",
+          "sourceNodeName": "Student",
+          "targetNodeName": "API Gateway HTTP API ($default stage)",
+          "protocol": "HTTPS",
+          "action": "63. [STUDENT] PATCH /status -> CLOSED",
+          "status": "success",
+          "explanation": "Student confirms the fix.",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "STUDENT",
+          "edgeId": "e-student-apigw"
+        },
+        {
+          "id": "ccms-step-64",
+          "stepNumber": 64,
+          "timestampMs": 230540,
+          "sourceNodeId": "node-apigw",
+          "targetNodeId": "node-alb",
+          "sourceNodeName": "API Gateway HTTP API ($default stage)",
+          "targetNodeName": "Internal ALB (path-based routing)",
+          "protocol": "HTTP",
+          "action": "64. [STUDENT] VPC Link to internal ALB :80",
+          "status": "success",
+          "explanation": "API Gateway forwards ANY /api/{proxy+} over the VPC Link (ENIs in both private app subnets) to the internal ALB; sg-vpclink may only reach sg-alb on port 80.",
+          "targetHealth": "healthy",
+          "latencyMs": 10,
+          "phase": "STUDENT",
+          "edgeId": "e-apigw-alb"
+        },
+        {
+          "id": "ccms-step-65",
+          "stepNumber": 65,
+          "timestampMs": 230550,
+          "sourceNodeId": "node-alb",
+          "targetNodeId": "node-ecs-complaint",
+          "sourceNodeName": "Internal ALB (path-based routing)",
+          "targetNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "protocol": "HTTP",
+          "action": "65. [STUDENT] Route to Complaint Service",
+          "status": "success",
+          "explanation": "",
+          "targetHealth": "healthy",
+          "latencyMs": 10,
+          "phase": "STUDENT",
+          "edgeId": "e-alb-complaint"
+        },
+        {
+          "id": "ccms-step-66",
+          "stepNumber": 66,
+          "timestampMs": 230590,
+          "sourceNodeId": "node-ecs-complaint",
+          "targetNodeId": "node-rds",
+          "sourceNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "targetNodeName": "RDS PostgreSQL 16 (db.t4g.micro, single-AZ)",
+          "protocol": "SQL",
+          "action": "66. [STUDENT] Save status CLOSED",
+          "status": "success",
+          "explanation": "",
+          "targetHealth": "healthy",
+          "latencyMs": 40,
+          "phase": "STUDENT",
+          "edgeId": "e-complaint-rds"
+        },
+        {
+          "id": "ccms-step-67",
+          "stepNumber": 67,
+          "timestampMs": 230605,
+          "sourceNodeId": "node-ecs-complaint",
+          "targetNodeId": "node-sqs",
+          "sourceNodeName": "Complaint Service (ECS Fargate, 2-4 tasks across AZs)",
+          "targetNodeName": "SQS ccms-complaint-events (SUBMITTED / ASSIGNED / STATUS_CHANGED)",
+          "protocol": "Message",
+          "action": "67. [STUDENT] EVENT COMPLAINT_STATUS_CHANGED",
+          "status": "success",
+          "explanation": "SendMessage to SQS. The API has already answered the user; notification work is asynchronous.",
+          "targetHealth": "healthy",
+          "latencyMs": 15,
+          "phase": "STUDENT",
+          "edgeId": "e-complaint-sqs"
+        },
+        {
+          "id": "ccms-step-68",
+          "stepNumber": 68,
+          "timestampMs": 230805,
+          "sourceNodeId": "node-sqs",
+          "targetNodeId": "node-lambda-notify",
+          "sourceNodeName": "SQS ccms-complaint-events (SUBMITTED / ASSIGNED / STATUS_CHANGED)",
+          "targetNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "protocol": "Message",
+          "action": "68. [STUDENT] SQS triggers Notification consumer Lambda (COMPLAINT_STATUS_CHANGED)",
+          "status": "success",
+          "explanation": "Batch of up to 10, no batching window; failed records are reported individually and retried, then sent to the DLQ after 3 tries.",
+          "targetHealth": "healthy",
+          "latencyMs": 200,
+          "phase": "STUDENT",
+          "edgeId": "e-sqs-lambda"
+        },
+        {
+          "id": "ccms-step-69",
+          "stepNumber": 69,
+          "timestampMs": 230835,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-alb",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "Internal ALB (path-based routing)",
+          "protocol": "HTTP",
+          "action": "69. [STUDENT] Look up the student's email",
+          "status": "success",
+          "explanation": "GET /internal/users/{id} through the internal ALB to the Auth Service (never exposed on API Gateway).",
+          "targetHealth": "healthy",
+          "latencyMs": 30,
+          "phase": "STUDENT",
+          "edgeId": "e-lambda-alb"
+        },
+        {
+          "id": "ccms-step-70",
+          "stepNumber": 70,
+          "timestampMs": 230855,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-rds",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "RDS PostgreSQL 16 (db.t4g.micro, single-AZ)",
+          "protocol": "SQL",
+          "action": "70. [STUDENT] Save in-app notification",
+          "status": "success",
+          "explanation": "INSERT ... ON CONFLICT (event_id, user_id) DO NOTHING, so a retried message never creates duplicates.",
+          "targetHealth": "healthy",
+          "latencyMs": 20,
+          "phase": "STUDENT",
+          "edgeId": "e-lambda-rds"
+        },
+        {
+          "id": "ccms-step-71",
+          "stepNumber": 71,
+          "timestampMs": 230935,
+          "sourceNodeId": "node-lambda-notify",
+          "targetNodeId": "node-ses",
+          "sourceNodeName": "Notification consumer Lambda (ccms-notification-consumer)",
+          "targetNodeName": "Amazon SES (email)",
+          "protocol": "Event",
+          "action": "71. [STUDENT] Send email",
+          "status": "success",
+          "explanation": "SES SendEmail from the verified sender (skipped if no sender is configured; in-app still works).",
+          "targetHealth": "healthy",
+          "latencyMs": 80,
+          "phase": "STUDENT",
+          "edgeId": "e-lambda-ses"
+        },
+        {
+          "id": "ccms-step-72",
+          "stepNumber": 72,
+          "timestampMs": 231935,
+          "sourceNodeId": "node-ses",
+          "targetNodeId": "node-student",
+          "sourceNodeName": "Amazon SES (email)",
+          "targetNodeName": "Student",
+          "protocol": "Event",
+          "action": "72. [STUDENT] Email to Student: complaint closed",
+          "status": "success",
+          "explanation": "",
+          "targetHealth": "healthy",
+          "latencyMs": 1000,
+          "phase": "STUDENT",
+          "edgeId": "e-ses-student"
+        }
+      ],
+      "success": true,
+      "statusCode": 200,
+      "summary": "Complaint CMP-2026-000123 went SUBMITTED -> ASSIGNED -> IN_PROGRESS -> RESOLVED -> CLOSED, with a CodePipeline rolling release of complaint-service in the middle that no user noticed.",
+      "totalLatencyMs": 231935,
+      "bottlenecksDetected": [],
+      "cascadeOccurred": false,
+      "path": [
+        "node-student",
+        "node-cloudfront",
+        "node-apigw",
+        "node-alb",
+        "node-ecs-auth",
+        "node-rds",
+        "node-ecs-complaint",
+        "node-s3-evidence",
+        "node-sqs",
+        "node-lambda-notify",
+        "node-ses",
+        "node-lambda-api",
+        "node-admin",
+        "node-staff",
+        "node-dev",
+        "node-repo",
+        "node-pipeline",
+        "node-build",
+        "node-ecr",
+        "node-alarm",
+        "node-cloudtrail"
+      ]
+    },
+    "activeFailures": [],
+    "activeLabReference": null,
+    "activeChallengeId": null,
+    "challengeResult": null,
+    "appMode": "simulate",
+    "selectedNodeId": null,
+    "selectedEdgeId": null,
+    "activeStepIndex": 0,
+    "playbackSpeed": 1,
+    "highlightTaskFlow": true,
+    "showNaclSideColumn": false,
+    "viewport": {
+      "x": 80,
+      "y": 170,
+      "zoom": 0.45
+    }
+  }
+}

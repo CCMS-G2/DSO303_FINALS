@@ -1,18 +1,26 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Pool } = require('pg');
 const { authenticate, requireRole } = require('./middleware/auth');
 const asyncHandler = require('./asyncHandler');
+const { log, requestLogger } = require('./logger');
+const { parseDomains, validateRegistration, validateNewUser, validateUserUpdate } = require('./validation');
 
 const app = express();
+app.use(helmet()); // security headers (proposal, Section 16)
 app.use(cors());
 app.use(express.json());
+app.use(requestLogger);
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const JWT_SECRET = process.env.JWT_SECRET;
 const TOKEN_TTL = '1h';
+const BCRYPT_COST = 12; // proposal, Section 16
+// FR-01: students register with a college email. Comma-separated domains.
+const ALLOWED_EMAIL_DOMAINS = parseDomains(process.env.ALLOWED_EMAIL_DOMAINS || 'ccms.edu');
 
 if (!JWT_SECRET) {
   console.error('FATAL: JWT_SECRET is not set. Refusing to start.');
@@ -29,19 +37,14 @@ app.get('/health', (_req, res) => res.json({ status: 'ok', service: 'auth-servic
 
 app.post('/api/auth/register', asyncHandler(async (req, res) => {
   const { fullName, email, password } = req.body || {};
-  if (!fullName || !email || !password) {
-    return res.status(400).json({ error: 'fullName, email and password are required' });
-  }
-  if (password.length < 8) {
-    return res.status(400).json({ error: 'Password must be at least 8 characters' });
-  }
-  // TODO: restrict to the college email domain with a regex check, as in the proposal.
+  const problem = validateRegistration(req.body, ALLOWED_EMAIL_DOMAINS);
+  if (problem) return res.status(400).json({ error: problem });
   try {
-    const hash = await bcrypt.hash(password, 10);
+    const hash = await bcrypt.hash(password, BCRYPT_COST);
     const { rows } = await pool.query(
       `INSERT INTO auth.users (full_name, email, password_hash, role)
        VALUES ($1, $2, $3, 'STUDENT') RETURNING *`,
-      [fullName, email.toLowerCase(), hash],
+      [String(fullName).trim(), email.trim().toLowerCase(), hash],
     );
     res.status(201).json(publicUser(rows[0]));
   } catch (err) {
@@ -53,7 +56,7 @@ app.post('/api/auth/register', asyncHandler(async (req, res) => {
 app.post('/api/auth/login', asyncHandler(async (req, res) => {
   const { email, password } = req.body || {};
   if (!email || !password) return res.status(400).json({ error: 'email and password are required' });
-  const { rows } = await pool.query('SELECT * FROM auth.users WHERE email = $1', [email.toLowerCase()]);
+  const { rows } = await pool.query('SELECT * FROM auth.users WHERE email = $1', [String(email).trim().toLowerCase()]);
   const user = rows[0];
   if (!user || !user.is_active) return res.status(401).json({ error: 'Invalid credentials' });
   const ok = await bcrypt.compare(password, user.password_hash);
@@ -80,14 +83,13 @@ app.get('/api/users', authenticate, requireRole('ADMIN'), asyncHandler(async (_r
 
 app.post('/api/users', authenticate, requireRole('ADMIN'), asyncHandler(async (req, res) => {
   const { fullName, email, password, role } = req.body || {};
-  if (!fullName || !email || !password || !['STAFF', 'ADMIN'].includes(role)) {
-    return res.status(400).json({ error: 'fullName, email, password and role (STAFF or ADMIN) are required' });
-  }
+  const problem = validateNewUser(req.body);
+  if (problem) return res.status(400).json({ error: problem });
   try {
-    const hash = await bcrypt.hash(password, 10);
+    const hash = await bcrypt.hash(password, BCRYPT_COST);
     const { rows } = await pool.query(
       `INSERT INTO auth.users (full_name, email, password_hash, role) VALUES ($1, $2, $3, $4) RETURNING *`,
-      [fullName, email.toLowerCase(), hash, role],
+      [String(fullName).trim(), email.trim().toLowerCase(), hash, role],
     );
     res.status(201).json(publicUser(rows[0]));
   } catch (err) {
@@ -98,6 +100,8 @@ app.post('/api/users', authenticate, requireRole('ADMIN'), asyncHandler(async (r
 
 app.patch('/api/users/:id', authenticate, requireRole('ADMIN'), asyncHandler(async (req, res) => {
   const { role, isActive } = req.body || {};
+  const problem = validateUserUpdate(req.body, req.params.id, req.user.sub);
+  if (problem) return res.status(400).json({ error: problem });
   const { rows } = await pool.query(
     `UPDATE auth.users SET role = COALESCE($1, role), is_active = COALESCE($2, is_active),
        updated_at = now() WHERE id = $3 RETURNING *`,
@@ -120,10 +124,11 @@ app.get('/internal/users/:id', asyncHandler(async (req, res) => {
 
 // Final error handler: anything thrown by an asyncHandler-wrapped route
 // lands here as a JSON response instead of crashing the process.
-app.use((err, _req, res, _next) => {
-  console.error('Unhandled error:', err);
+app.use((err, req, res, _next) => {
+  if (err.code === '22P02') return res.status(400).json({ error: 'Invalid id' }); // malformed UUID
+  log({ level: 'error', msg: 'unhandled error', requestId: req.id, error: err.message, stack: err.stack });
   res.status(500).json({ error: 'Internal server error' });
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`auth-service listening on ${port}`));
+app.listen(port, () => log({ level: 'info', msg: `auth-service listening on ${port}` }));
