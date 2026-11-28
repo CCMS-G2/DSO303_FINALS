@@ -5,7 +5,8 @@
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "node --watch src/app.js"
+    "dev": "node --watch src/app.js",
+    "test": "jest --coverage"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1178.0",
@@ -15,7 +16,29 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/rules.js"
+    ],
+    "coverageReporters": [
+      "text",
+      "clover"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 60,
+        "branches": 60,
+        "functions": 60,
+        "statements": 60
+      }
+    }
   }
 }

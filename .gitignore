@@ -12,3 +12,4 @@ node_modules/
 
 # Runtime-generated complaint evidence uploads
 services/complaint-service/data/
+coverage/

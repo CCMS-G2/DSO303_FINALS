@@ -22,7 +22,9 @@ CREATE TABLE auth.users (
 );
 
 -- Seed users (password for all three is: Password123!)
--- Hash generated with bcrypt, cost factor 10, see services/auth-service/scripts/hash.js
+-- Hash generated with bcrypt, see services/auth-service/scripts/hash.js. New
+-- passwords use cost factor 12 (proposal, Section 16); bcrypt stores the cost
+-- inside each hash, so these cost-10 seed hashes still verify.
 INSERT INTO auth.users (full_name, email, password_hash, role) VALUES
   ('Admin User', 'admin@ccms.edu', '$2b$10$hWb9n/IfGelXkaDqcke5ce91Pc3c0g/p2WSpf8yxWsBPzvfSZWIme', 'ADMIN'),
   ('Sonam Staff', 'staff@ccms.edu', '$2b$10$hWb9n/IfGelXkaDqcke5ce91Pc3c0g/p2WSpf8yxWsBPzvfSZWIme', 'STAFF'),
@@ -67,7 +69,8 @@ CREATE TABLE complaint.complaints (
   description       text NOT NULL,
   status            text NOT NULL DEFAULT 'SUBMITTED'
                       CHECK (status IN ('SUBMITTED', 'ASSIGNED', 'IN_PROGRESS', 'RESOLVED', 'CLOSED')),
-  image_key         text,
+  -- S3 keys of up to 3 evidence photos (FR-04), e.g. uploads/<student id>/<uuid>.jpg
+  image_keys        text[] NOT NULL DEFAULT '{}' CHECK (cardinality(image_keys) <= 3),
   created_at        timestamptz NOT NULL DEFAULT now(),
   assigned_at       timestamptz,
   resolved_at       timestamptz,
